@@ -5,11 +5,11 @@ import com.example.foodordering.services.MenuService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +22,10 @@ public class MenuController {
     public ResponseEntity<List<Menu>> getAllMenu() {
         List<Menu> menus = menuService.getAllMenus();
         return ResponseEntity.ok().body(menus);
+    }
+
+    @PostMapping("/getById/{id}")
+    public ResponseEntity<Optional<Menu>> getMenuById(@PathVariable int id){
+        return ResponseEntity.ok().body(menuService.getMenuById(id));
     }
 }
