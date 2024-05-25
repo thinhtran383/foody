@@ -15,7 +15,6 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/")
-
 @Tag(name = "Root", description = "Root for testing the API")
 public class HomeController {
     private final CloudinaryService cloudinaryService;

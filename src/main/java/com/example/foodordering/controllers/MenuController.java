@@ -3,6 +3,7 @@ package com.example.foodordering.controllers;
 import com.example.foodordering.dtos.MenuDTO;
 import com.example.foodordering.entities.MenuItem;
 import com.example.foodordering.services.MenuItemService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.v1.prefix}/menu")
+@Tag(name = "MenuController", description = "Operations pertaining to menu items in Food Ordering System")
 public class MenuController {
     private final MenuItemService menuItemService;
     @GetMapping()

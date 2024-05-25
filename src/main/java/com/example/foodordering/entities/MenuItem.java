@@ -15,6 +15,12 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "menuItems", schema = "foody")
+@NamedEntityGraph(
+        name = "menuItemWithCategory",
+        attributeNodes = {
+                @NamedAttributeNode("category"),
+        }
+)
 public class MenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
