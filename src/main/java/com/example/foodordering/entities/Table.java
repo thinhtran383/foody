@@ -1,8 +1,8 @@
 package com.example.foodordering.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -10,6 +10,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @jakarta.persistence.Table(name = "tables", schema = "foody")
 public class Table {
     @Id
@@ -21,6 +24,7 @@ public class Table {
     @Column(name = "status")
     private String status;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "table")
     private Set<Order> orders = new LinkedHashSet<>();
 
