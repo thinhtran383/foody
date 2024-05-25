@@ -1,31 +1,31 @@
 package com.example.foodordering.controllers;
 
-import com.example.foodordering.entities.Menu;
-import com.example.foodordering.services.MenuService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.example.foodordering.entities.MenuItem;
+import com.example.foodordering.services.MenuItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.swing.text.html.Option;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Menu", description = "Menu API")
 @RequestMapping("${api.v1.prefix}/menu")
 public class MenuController {
-    private final MenuService menuService;
+    private final MenuItemService menuItemService;
+    @GetMapping()
+    public ResponseEntity<?> getMenuItems(
+            @RequestParam(defaultValue = "0", required = false) int page,
+            @RequestParam(defaultValue ="3", required = false) int size
+    ){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<MenuItem> menuItems = menuItemService.getAllMenuItems(pageable);
 
-    @GetMapping("")
-    public ResponseEntity<List<Menu>> getAllMenu() {
-        List<Menu> menus = menuService.getAllMenus();
-        return ResponseEntity.ok().body(menus);
+        return ResponseEntity.ok(menuItems.getContent());
     }
 
-    @PostMapping("/getById/{id}")
-    public ResponseEntity<Optional<Menu>> getMenuById(@PathVariable int id){
-        return ResponseEntity.ok().body(menuService.getMenuById(id));
-    }
 }
