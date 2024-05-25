@@ -20,7 +20,7 @@ public class MenuController {
     @GetMapping()
     public ResponseEntity<?> getMenuItems(
             @RequestParam(defaultValue = "0", required = false) int page,
-            @RequestParam(defaultValue ="3", required = false) int size
+            @RequestParam(defaultValue ="5", required = false) int size
     ){
         Pageable pageable = PageRequest.of(page, size);
         Page<MenuItem> menuItems = menuItemService.getAllMenuItems(pageable);

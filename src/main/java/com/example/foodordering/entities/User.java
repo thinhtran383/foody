@@ -1,12 +1,13 @@
 package com.example.foodordering.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Table(name = "users", schema = "foody")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId", nullable = false)
     private Integer id;
 
@@ -24,5 +26,11 @@ public class User {
     @Size(max = 255)
     @Column(name = "password")
     private String password;
+
+    @OneToOne(mappedBy = "users")
+    private UserInfo userInfo;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Role> roles = new LinkedHashSet<>();
 
 }

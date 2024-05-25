@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.Random;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,8 +24,7 @@ public class Order {
     @Column(name = "createdTime")
     private Instant createdTime;
 
-    @PrePersist
-    public void generateRandomOrderId() {
-        this.id = new Random().nextInt(1000000);
-    }
+    @OneToMany(mappedBy = "order")
+    private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
+
 }

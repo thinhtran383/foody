@@ -1,18 +1,22 @@
 package com.example.foodordering.entities;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@jakarta.persistence.Table(name = "menuItems", schema = "foody")
+@Table(name = "menuItems", schema = "foody")
 public class MenuItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "itemId", nullable = false)
     private Integer id;
 
@@ -30,5 +34,8 @@ public class MenuItem {
 
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
+
+    @OneToMany(mappedBy = "item")
+    private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 
 }
