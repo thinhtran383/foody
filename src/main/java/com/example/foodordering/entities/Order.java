@@ -27,4 +27,9 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 
+
+    @PrePersist
+    public void generateRandomOrderId() {
+        this.id = (int) (Math.random() * 1000000);
+    }
 }

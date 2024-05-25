@@ -1,5 +1,6 @@
 package com.example.foodordering.controllers;
 
+import com.example.foodordering.dtos.MenuDTO;
 import com.example.foodordering.entities.MenuItem;
 import com.example.foodordering.services.MenuItemService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class MenuController {
             @RequestParam(defaultValue ="5", required = false) int size
     ){
         Pageable pageable = PageRequest.of(page, size);
-        Page<MenuItem> menuItems = menuItemService.getAllMenuItems(pageable);
+        Page<MenuDTO> menuItems = menuItemService.getAllMenuItems(pageable);
 
         return ResponseEntity.ok(menuItems.getContent());
     }

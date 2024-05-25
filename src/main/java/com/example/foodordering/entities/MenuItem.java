@@ -1,5 +1,6 @@
 package com.example.foodordering.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
@@ -36,6 +37,7 @@ public class MenuItem {
     private BigDecimal price;
 
     @OneToMany(mappedBy = "item")
+    @JsonIgnore
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 
 }
