@@ -26,12 +26,12 @@ public class TableController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateTableStatus(@RequestParam @Valid int tableId) {
-        tableService.updateTableStatus(tableId);
+    public ResponseEntity<?> updateTableStatus(@RequestParam @Valid int tableId, @RequestParam @Valid boolean isFree) {
+        tableService.updateTableStatus(tableId, isFree);
         return ResponseEntity.ok().body("Table status updated successfully");
     }
 
-    @ApiResponse(content = @Content(schema = @Schema(implementation = Table.class)))
+    @ApiResponse(content = @Content(schema = @Schema(implementation = Table.class), mediaType = "application/json"))
     @GetMapping("/all")
     public ResponseEntity<?> getAllTables() {
         return ResponseEntity.ok().body(tableService.getAllTables());

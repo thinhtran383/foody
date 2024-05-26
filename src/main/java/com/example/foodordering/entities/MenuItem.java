@@ -21,6 +21,8 @@ import java.util.Set;
                 @NamedAttributeNode("category"),
         }
 )
+
+
 public class MenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

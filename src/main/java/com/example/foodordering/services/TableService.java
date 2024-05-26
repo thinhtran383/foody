@@ -2,6 +2,7 @@ package com.example.foodordering.services;
 
 import com.example.foodordering.entities.Table;
 import com.example.foodordering.repositories.TableRepository;
+import jakarta.persistence.Temporal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,18 +29,19 @@ public class TableService {
     }
 
     @Transactional
-    public void updateTableStatus(int tableId) {
+    public void updateTableStatus(int tableId, boolean isFree) {
         Table table = tableRepository.findById(tableId).orElseThrow();
-        if (table.getStatus().equals("FREE")) {
-            table.setStatus("OCCUPIED");
-        } else {
-            table.setStatus("FREE");
-        }
+        table.setStatus(isFree ? "FREE" : "OCCUPIED");
         tableRepository.save(table);
     }
 
     @Transactional
     public List<Table> getAllTables() {
         return tableRepository.findAll();
+    }
+
+    @Transactional
+    public Table getTableById(int tableId) {
+        return tableRepository.findById(tableId).orElseThrow();
     }
 }

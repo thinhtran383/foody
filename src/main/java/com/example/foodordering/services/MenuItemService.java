@@ -25,6 +25,13 @@ public class MenuItemService {
         return menuItems.map(menuItem -> modelMapper.map(menuItem, MenuDTO.class));
     }
 
+    @Transactional
+    public MenuItem getMenuItemById(@NotNull Integer menuItemId) {
+        return menuItemRepository.findById(menuItemId).orElseThrow();
+    }
+
+
+
 
 
 
