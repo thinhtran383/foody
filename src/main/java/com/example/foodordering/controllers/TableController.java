@@ -1,6 +1,10 @@
 package com.example.foodordering.controllers;
 
+import com.example.foodordering.entities.Table;
 import com.example.foodordering.services.TableService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -27,6 +31,7 @@ public class TableController {
         return ResponseEntity.ok().body("Table status updated successfully");
     }
 
+    @ApiResponse(content = @Content(schema = @Schema(implementation = Table.class)))
     @GetMapping("/all")
     public ResponseEntity<?> getAllTables() {
         return ResponseEntity.ok().body(tableService.getAllTables());
