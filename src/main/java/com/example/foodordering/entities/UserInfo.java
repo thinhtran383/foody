@@ -32,4 +32,8 @@ public class UserInfo {
     @Column(name = "phone")
     private String phone;
 
+    @Size(max = 255)
+    @Column(name = "address")
+    private String address;
+
 }
