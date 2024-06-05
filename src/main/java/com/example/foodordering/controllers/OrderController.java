@@ -3,6 +3,7 @@ package com.example.foodordering.controllers;
 import com.example.foodordering.dtos.OrderItemDTO;
 import com.example.foodordering.entities.Table;
 import com.example.foodordering.services.OrderService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -41,6 +42,8 @@ public class OrderController {
         }
     }
 
+
+    @Hidden
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
     public Map<String, String> handleValidationExceptions(Exception ex) {
