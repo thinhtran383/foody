@@ -1,6 +1,7 @@
 package com.example.foodordering.controllers;
 
 import com.example.foodordering.entities.Table;
+import com.example.foodordering.response.Response;
 import com.example.foodordering.services.TableService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,6 +35,6 @@ public class TableController {
     @ApiResponse(content = @Content(schema = @Schema(implementation = Table.class), mediaType = "application/json"))
     @GetMapping("/all")
     public ResponseEntity<?> getAllTables() {
-        return ResponseEntity.ok().body(tableService.getAllTables());
+        return ResponseEntity.ok().body(new Response("success", "Tables retrieved successfully", tableService.getAllTables()));
     }
 }

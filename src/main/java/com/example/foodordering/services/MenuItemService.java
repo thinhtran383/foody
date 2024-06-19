@@ -29,10 +29,4 @@ public class MenuItemService {
     public MenuItem getMenuItemById(@NotNull Integer menuItemId) {
         return menuItemRepository.findById(menuItemId).orElseThrow();
     }
-
-
-
-
-
-
 }
