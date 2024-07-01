@@ -29,4 +29,9 @@ public class MenuItemService {
     public MenuItem getMenuItemById(@NotNull Integer menuItemId) {
         return menuItemRepository.findById(menuItemId).orElseThrow();
     }
+
+    @Transactional
+    public void addNewMenuItem(@NotNull MenuItem menuItem) {
+        menuItemRepository.save(menuItem);
+    }
 }

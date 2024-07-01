@@ -31,4 +31,9 @@ public class HomeController {
         Map<String, String> data = this.cloudinaryService.upload(file);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
+
+    @GetMapping("/done")
+    public String done() {
+        return "Done";
+    }
 }
