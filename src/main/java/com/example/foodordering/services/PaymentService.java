@@ -66,6 +66,7 @@ public class PaymentService {
         ResponseEntity<Map> response = restTemplate.postForEntity(endPoint, entity, Map.class);
 
         Map<String, String> responseBody = response.getBody();
+        System.out.println(responseBody);
         return "redirect:" + responseBody.get("payUrl");
     }
 
