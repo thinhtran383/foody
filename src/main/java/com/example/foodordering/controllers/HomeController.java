@@ -1,6 +1,8 @@
 package com.example.foodordering.controllers;
 
+import com.example.foodordering.request.NotificationMessage;
 import com.example.foodordering.services.CloudinaryService;
+import com.example.foodordering.services.fcm.FirebaseMessagingService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.annotations.OpenAPI30;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -18,10 +21,16 @@ import java.util.Map;
 @Tag(name = "Root", description = "Root for testing the API")
 public class HomeController {
     private final CloudinaryService cloudinaryService;
+    private final FirebaseMessagingService firebaseMessagingService;
 
     @GetMapping()
     public String home() {
-        return "Welcome to FoodOrdering! :)\n Thinh, Hai, Ngoc, Toan";
+        return """
+                Welcome to FoodOrdering!:)
+                Please check the API documentation at /api-docs
+                Please check the API documentation at /swagger-ui.html
+                Please check the API documentation at /redoc.html
+                """;
     }
 
 
@@ -32,8 +41,17 @@ public class HomeController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @GetMapping("/done")
-    public String done() {
-        return "Done";
+    @PostMapping("/notification")
+    public String sendNotificationByToken(){
+
+        NotificationMessage notificationMessage = NotificationMessage.builder()
+                .recipientToken("dcQnqTMuQ1e0TAm-yiKY8y:APA91bGKfyf2IJNrTIprc54ZMFn5VX_kGxJQ7Am65THkqyOo4M-SgziIpCvzUIYAGE1R7OqRTfjuJTflAsZbAJ0MhEYt_-G2ZukYTWxv3PtLaXG7IBOYMXt5Lz_quB9-M_5OMop4BEiY")
+                .title("thinh")
+                .body("body")
+                .image("image")
+                .build();
+        return firebaseMessagingService.sendNotificationByToken(notificationMessage);
     }
+
+
 }

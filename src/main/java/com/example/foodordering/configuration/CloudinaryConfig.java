@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class AppConfig {
+public class CloudinaryConfig {
     @Value("${cloud.name}")
     String cloudName;
 

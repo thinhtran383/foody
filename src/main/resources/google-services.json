@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "690877911882",
+    "project_id": "food-ordering-1666f",
+    "storage_bucket": "food-ordering-1666f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690877911882:android:c50cfe1ed298c3a17167b3",
+        "android_client_info": {
+          "package_name": "online.thinhtran.foodordering"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOtsPaWYAl3r5hnuKA4BWSGjjl5NG-FdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
