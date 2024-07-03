@@ -1,5 +1,6 @@
 package com.example.foodordering.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,5 +13,7 @@ public class NotificationMessage {
     private String title;
     private String body;
     private String image;
+
+    @Schema(hidden = true)
     private Map<String, String> data;
 }
