@@ -16,12 +16,11 @@ public class FirebaseConfig {
     @Bean
     FirebaseMessaging firebaseMessaging() throws IOException {
         GoogleCredentials googleCredentials = GoogleCredentials.fromStream(
-                new ClassPathResource("food-ordering-1666f-firebase-adminsdk-pel1z-cba53403f1.json").getInputStream()
+                new ClassPathResource("food-ordering-1666f-firebase-adminsdk-pel1z-0fe88d6a94.json").getInputStream()
         );
 
         FirebaseOptions firebaseOptions = FirebaseOptions.builder()
                 .setCredentials(googleCredentials).build();
-
         FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "my-app");
         return FirebaseMessaging.getInstance(app);
     }
