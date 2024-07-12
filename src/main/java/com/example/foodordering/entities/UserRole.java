@@ -2,12 +2,14 @@ package com.example.foodordering.entities;
 
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = "userRole", schema = "foody")
 public class UserRole {
     @EmbeddedId

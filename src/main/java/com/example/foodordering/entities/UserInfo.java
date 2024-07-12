@@ -3,12 +3,15 @@ package com.example.foodordering.entities;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Table(name = "userInfo", schema = "foody")
 public class UserInfo {
     @Id
@@ -18,6 +21,7 @@ public class UserInfo {
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "userId", nullable = false)
+    @ToString.Exclude
     private User users;
 
     @Size(max = 255)

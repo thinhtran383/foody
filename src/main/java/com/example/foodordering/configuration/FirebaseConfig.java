@@ -7,6 +7,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,20 +21,22 @@ public class FirebaseConfig {
 
     @Bean
     public FirebaseMessaging firebaseMessaging() throws IOException {
-        URL url = new URL(fcmJsonKeyUrl);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
+//        URL url = new URL(fcmJsonKeyUrl);
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        connection.setRequestMethod("GET");
+//
+//        if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+//            throw new IOException("Failed to fetch JSON key file: " + connection.getResponseMessage());
+//        }
+//
+//        InputStream serviceAccount = connection.getInputStream();
 
-        if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-            throw new IOException("Failed to fetch JSON key file: " + connection.getResponseMessage());
-        }
+//        GoogleCredentials googleCredentials = GoogleCredentials.fromStream(serviceAccount);
 
-        InputStream serviceAccount = connection.getInputStream();
-//        GoogleCredentials googleCredentials = GoogleCredentials.fromStream( // from json file local
-//                new ClassPathResource("food-ordering-1666f-firebase-adminsdk-pel1z-d9ed44fb0a.json").getInputStream()
-//        );
+        GoogleCredentials googleCredentials = GoogleCredentials.fromStream( // from json file local
+                new ClassPathResource("food-ordering-1666f-firebase-adminsdk-pel1z-d9ed44fb0a.json").getInputStream()
+        );
 
-        GoogleCredentials googleCredentials = GoogleCredentials.fromStream(serviceAccount);
 
         FirebaseOptions firebaseOptions = FirebaseOptions.builder()
                 .setCredentials(googleCredentials).build();

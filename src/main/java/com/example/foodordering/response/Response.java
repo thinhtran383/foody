@@ -2,9 +2,11 @@ package com.example.foodordering.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
+@ToString
 public class Response {
     private String status;
     private String message;

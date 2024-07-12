@@ -21,9 +21,9 @@ public class TableController {
     private final TableService tableService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addTables(@RequestParam @Valid int numberOfTables) {
+    public ResponseEntity<Response> addTables(@RequestParam @Valid int numberOfTables) {
         tableService.addNewTable(numberOfTables);
-        return ResponseEntity.ok().body(numberOfTables + " tables added successfully");
+        return ResponseEntity.ok().body(new Response("success", "Tables added successfully", null));
     }
 
     @PostMapping("/update")
@@ -34,7 +34,7 @@ public class TableController {
 
     @ApiResponse(content = @Content(schema = @Schema(implementation = Table.class), mediaType = "application/json"))
     @GetMapping("/all")
-    public ResponseEntity<?> getAllTables() {
+    public ResponseEntity<Response> getAllTables() {
         return ResponseEntity.ok().body(new Response("success", "Tables retrieved successfully", tableService.getAllTables()));
     }
 }
