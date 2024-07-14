@@ -30,7 +30,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        filterChain.doFilter(request,response);
 
         String authorizationHeader = request.getHeader("Authorization");
 
@@ -87,9 +86,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 // Category
                 Pair.of(String.format("%s/categories", apiPrefix),"GET"),
                 Pair.of(String.format("%s/categories/**", apiPrefix),"GET"),
-                Pair.of(String.format("%s/categories/**", apiPrefix),"POST")
+                Pair.of(String.format("%s/categories/**", apiPrefix),"POST"),
 
-
+                // Table
+                Pair.of(String.format("%s/tables/**", apiPrefix), "GET")
 
         );
 

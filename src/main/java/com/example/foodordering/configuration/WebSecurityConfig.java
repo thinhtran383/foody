@@ -35,7 +35,6 @@ public class WebSecurityConfig {
         http.cors(AbstractHttpConfigurer::disable);
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//        http.authorizeHttpRequests(request -> request.anyRequest().permitAll());
 
         http.authorizeHttpRequests(request -> {
                     request.requestMatchers(
@@ -56,7 +55,10 @@ public class WebSecurityConfig {
                                     // category
                                     String.format("%s/categories", apiPrefix),
                                     String.format("%s/categories/**", apiPrefix),
-                                    "/error/**"
+                                    "/error/**",
+
+                                    // table
+                                    String.format("%s/tables/**",apiPrefix)
 
                             ).permitAll()
                             .anyRequest()
