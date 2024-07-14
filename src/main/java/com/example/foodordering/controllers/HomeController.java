@@ -1,29 +1,20 @@
 package com.example.foodordering.controllers;
 
 import com.example.foodordering.dtos.UserDTO;
-import com.example.foodordering.entities.Role;
-import com.example.foodordering.entities.Table;
 import com.example.foodordering.entities.User;
-import com.example.foodordering.request.NotificationMessage;
+import com.example.foodordering.dtos.NotificationMessage;
 import com.example.foodordering.services.CloudinaryService;
 import com.example.foodordering.services.TokenService;
 import com.example.foodordering.services.UserService;
 import com.example.foodordering.services.fcm.FirebaseMessagingService;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.annotations.OpenAPI30;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController

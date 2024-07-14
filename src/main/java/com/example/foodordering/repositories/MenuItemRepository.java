@@ -15,4 +15,7 @@ import java.util.Optional;
 public interface MenuItemRepository extends JpaRepository<MenuItem, Integer> {
     @EntityGraph(value = "menuItemWithCategory")
     Page<MenuItem> findAll(@NonNull Pageable pageable);
+
+
+    Page<MenuItem> findMenuItemByCategory_CategoryName(@NonNull Pageable pageable, String category);
 }
