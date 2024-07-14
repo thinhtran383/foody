@@ -65,6 +65,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 // Test
                 Pair.of("/test", "GET"),
+                Pair.of("/**", "POST"),
+
 
                 // Swagger
                 Pair.of("/swagger-ui/**", "GET"),

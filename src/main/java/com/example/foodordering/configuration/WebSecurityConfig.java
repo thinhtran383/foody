@@ -58,6 +58,7 @@ public class WebSecurityConfig {
                                     // menu
                                     String.format("%s/menu/**", apiPrefix),
                                     String.format("%s/menu", apiPrefix),
+                                    "/new",
 
                                     // category
                                     String.format("%s/categories", apiPrefix),
@@ -66,6 +67,8 @@ public class WebSecurityConfig {
 
                                     // table
                                     String.format("%s/tables/**",apiPrefix)
+
+
 
                             ).permitAll()
                             .anyRequest()
