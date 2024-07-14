@@ -42,7 +42,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "users")
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
     private UserInfo userInfo;
 
     @ManyToMany(mappedBy = "users")
@@ -51,6 +51,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (roles == null) {
+            roles = new LinkedHashSet<>();
+        }
+
         return getRoles().stream().map(userRole -> new SimpleGrantedAuthority(userRole.getRoleName())).toList();
     }
 

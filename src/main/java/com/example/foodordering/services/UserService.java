@@ -1,5 +1,6 @@
 package com.example.foodordering.services;
 
+import com.example.foodordering.dtos.UpdateUserDTO;
 import com.example.foodordering.dtos.UserDTO;
 import com.example.foodordering.entities.*;
 import com.example.foodordering.exceptions.DataNotFoundException;
@@ -135,17 +136,62 @@ public class UserService {
     }
 
     @Transactional
-    public User getUserDetailFromToken(String token) throws Exception{
+    public User getUserDetailFromToken(String token) throws Exception {
         String username = jwtGenerator.extractUsername(token);
 
 
         Optional<User> user = userRepository.findByUsername(username);
 
-        if(user.isPresent()){
+        if (user.isPresent()) {
             return user.get();
         } else {
             throw new DataNotFoundException("User not found");
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public User updateInfo(Long userId, UpdateUserDTO updatedUserDTO) throws Exception {
+        Optional<User> existingUser = userRepository.findById(userId);
+
+        // check user is existed
+        if (existingUser.isEmpty()) {
+            throw new DataNotFoundException("User not found");
+        }
+
+        UserInfo userInfoExisting = existingUser.get().getUserInfo();
+        // update user
+        if (updatedUserDTO.getFullName() != null) {
+            userInfoExisting.setName(updatedUserDTO.getFullName());
+        }
+
+        if (updatedUserDTO.getPhoneNumber() != null) {
+            userInfoExisting.setPhone(updatedUserDTO.getPhoneNumber());
+        }
+
+        if (updatedUserDTO.getAddress() != null) {
+            userInfoExisting.setAddress(updatedUserDTO.getAddress());
+        }
+
+        if(updatedUserDTO.getEmail() != null){
+            userInfoExisting.setEmail(updatedUserDTO.getEmail());
+        }
+
+        if (updatedUserDTO.getPassword() != null
+                && !updatedUserDTO.getPassword().isEmpty()) {
+            if (!updatedUserDTO.getPassword().equals(updatedUserDTO.getRetypePassword())){ // check retype password
+                throw new DataNotFoundException("Password not match");
+            }
+
+            String newPassword = updatedUserDTO.getPassword();
+            String encodePassword = passwordEncoder.encode(newPassword);
+
+            existingUser.get().setPassword(encodePassword);
+
+        }
+
+        existingUser.get().setUserInfo(userInfoExisting);
+        return userRepository.save(existingUser.get());
+
     }
 
 }

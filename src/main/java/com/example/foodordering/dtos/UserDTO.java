@@ -37,11 +37,5 @@ public class UserDTO {
     @NotNull(message = "Role is required")
     private int role;
 
-    @Hidden
-    public User getUser() {
-        return User.builder()
-                .username(username)
-                .password(password)
-                .build();
-    }
+
 }
