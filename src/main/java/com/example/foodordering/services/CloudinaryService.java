@@ -13,12 +13,12 @@ import java.util.Map;
 public class CloudinaryService {
     private final Cloudinary cloudinary;
 
-    public Map<String, String> upload(MultipartFile file)  {
+    public String upload(MultipartFile file)  {
         try{
-            Map<String, String> data = this.cloudinary.uploader().upload(file.getBytes(), Map.of());
+            Map<String, String> data = cloudinary.uploader().upload(file.getBytes(), Map.of());
             String url = data.get("secure_url");
             System.out.println(url);
-            return data;
+            return url;
         }catch (IOException io){
             throw new RuntimeException("Image upload fail");
         }
