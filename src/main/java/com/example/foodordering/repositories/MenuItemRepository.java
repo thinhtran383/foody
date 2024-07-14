@@ -18,4 +18,6 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Integer> {
 
 
     Page<MenuItem> findMenuItemByCategory_CategoryName(@NonNull Pageable pageable, String category);
+
+    MenuItem findByImage(String image);
 }

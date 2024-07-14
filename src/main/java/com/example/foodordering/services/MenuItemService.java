@@ -1,11 +1,15 @@
 package com.example.foodordering.services;
 
 import com.example.foodordering.dtos.MenuDTO;
+import com.example.foodordering.entities.Category;
 import com.example.foodordering.entities.MenuItem;
+import com.example.foodordering.exceptions.DataNotFoundException;
+import com.example.foodordering.repositories.CategoryRepository;
 import com.example.foodordering.repositories.MenuItemRepository;
 import com.example.foodordering.response.menu.MenuItemResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +21,11 @@ import java.awt.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
+    private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
@@ -41,7 +47,37 @@ public class MenuItemService {
     }
 
     @Transactional
-    public void addNewMenuItem(@NotNull MenuItem menuItem) {
-        menuItemRepository.save(menuItem);
+    public MenuItemResponse addNewMenuItem(@NotNull MenuDTO menuDTO) throws Exception {
+        MenuItem menuItem = modelMapper.map(menuDTO, MenuItem.class);
+
+        Category category = categoryRepository.findByCategoryName(menuDTO.getCategoryName());
+
+
+        if(category == null) {
+           throw new DataNotFoundException("Category not found");
+        }
+
+        menuItem.setCategory(category);
+
+        return modelMapper.map(menuItemRepository.save(menuItem), MenuItemResponse.class);
+    }
+
+    public MenuItemResponse updateMenuItem(Integer id, MenuDTO menuDTO)  throws Exception{
+       MenuItem menuItem = menuItemRepository.findById(id).orElseThrow();
+            Category category = categoryRepository.findByCategoryName(menuDTO.getCategoryName());
+
+            if(category == null) {
+                throw new DataNotFoundException("Category not found");
+            }
+
+            if(menuDTO.getItemName() != null) {
+                menuItem.setItemName(menuDTO.getItemName());
+            }
+
+
+
+
+
+            return modelMapper.map(menuItemRepository.save(menuItem), MenuItemResponse.class);
     }
 }
