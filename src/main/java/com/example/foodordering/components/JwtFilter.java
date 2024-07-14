@@ -30,9 +30,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        filterChain.doFilter(request,response);
+
         String authorizationHeader = request.getHeader("Authorization");
 
         System.out.println(request.getServletPath());
+        System.out.println(request.getMethod());
 
         if (isNonAuthRequest(request)) {
             filterChain.doFilter(request, response);
@@ -59,6 +62,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private boolean isNonAuthRequest(HttpServletRequest request) {
         final List<Pair<String, String>> nonAuthRequests = List.of(
+
+
                 // Test
                 Pair.of("/test", "GET"),
 
@@ -69,7 +74,21 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 // Login
                 Pair.of(String.format("%s/users/**", apiPrefix), "POST"),
-                Pair.of(String.format("%s/roles", apiPrefix), "GET")
+                Pair.of(String.format("%s/users/**", apiPrefix), "PUT"),
+                Pair.of(String.format("%s/roles", apiPrefix), "GET"),
+
+                // Error
+                Pair.of("/error/**", "GET"),
+
+                //Menu
+                Pair.of(String.format("%s/menu/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/menu", apiPrefix), "GET"),
+
+                // Category
+                Pair.of(String.format("%s/categories", apiPrefix),"GET"),
+                Pair.of(String.format("%s/categories/**", apiPrefix),"GET"),
+                Pair.of(String.format("%s/categories/**", apiPrefix),"POST")
+
 
 
         );

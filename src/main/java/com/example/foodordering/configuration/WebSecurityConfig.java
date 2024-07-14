@@ -25,7 +25,6 @@ public class WebSecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Value("${api.v1.prefix}")
     String apiPrefix;
@@ -36,25 +35,37 @@ public class WebSecurityConfig {
         http.cors(AbstractHttpConfigurer::disable);
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http.authorizeHttpRequests(request -> {
-                    request.requestMatchers(
-                            "/swagger-ui/**",
-                            "/v3/api-docs/",
-                            "/v3/api-docs/**",
-                            "/test",
-                            String.format("%s/roles", apiPrefix),
-                            String.format("%s/users/**", apiPrefix),
-                            String.format("%s/users/", apiPrefix)
-                    ).permitAll();
+        http.authorizeHttpRequests(request -> request.anyRequest().permitAll());
 
-                    request.requestMatchers("/hello").permitAll();
+//        http.authorizeHttpRequests(request -> {
+//                    request.requestMatchers(
+//                                    "/swagger-ui/**",
+//                                    "/v3/api-docs/",
+//                                    "/v3/api-docs/**",
+//                                    "/test",
+//
+//                                    // user
+//                                    String.format("%s/roles", apiPrefix),
+//                                    String.format("%s/users/**", apiPrefix),
+//                                    String.format("%s/users/", apiPrefix),
+//
+//                                    // menu
+//                                    String.format("%s/menu/**", apiPrefix),
+//                                    String.format("%s/menu", apiPrefix),
+//
+//                                    // category
+//                                    String.format("%s/categories", apiPrefix),
+//                                    String.format("%s/categories/**", apiPrefix),
+//                                    "/error/**"
+//
+//                            ).permitAll()
+//                            .anyRequest()
+//                            .authenticated();
+//
+//
+//                })
+//                .authenticationProvider(authenticationProvider);
 
-
-                })
-                .authenticationProvider(authenticationProvider)
-                .exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
-                        httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(accessDeniedHandler)
-                );
 
         return http.build();
     }
