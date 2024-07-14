@@ -14,15 +14,14 @@ public class DeviceTokenService {
     private final DeviceTokenRepository deviceTokenRepository;
 
     @Transactional
-    public void saveToken(String token) { // token thiet bi gui thong bao
+    public DeviceToken saveDeviceToken(String token) {
         Optional<DeviceToken> deviceToken = deviceTokenRepository.findByToken(token);
-
-        if (deviceToken.isPresent()) {
-            return;
+        if (deviceToken.isEmpty()) {
+            DeviceToken newDeviceToken = new DeviceToken();
+            newDeviceToken.setToken(token);
+            return deviceTokenRepository.save(newDeviceToken);
         }
 
-        DeviceToken newDeviceToken = new DeviceToken();
-        newDeviceToken.setToken(token);
-        deviceTokenRepository.save(newDeviceToken);
+        return deviceToken.get();
     }
 }
