@@ -24,6 +24,10 @@ public class CategoryService {
 
     @Transactional
     public Category createCategory(CategoryDTO categoryDTO){
+        Category category = categoryRepository.findByCategoryName(categoryDTO.getName());
+        if(category != null){
+            return category;
+        }
         return categoryRepository.save(modelMapper.map(categoryDTO, Category.class));
     }
 }
