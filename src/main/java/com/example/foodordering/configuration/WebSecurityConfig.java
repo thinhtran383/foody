@@ -63,8 +63,10 @@ public class WebSecurityConfig {
                                     // category
                                     String.format("%s/categories", apiPrefix),
                                     String.format("%s/categories/**", apiPrefix),
-                                    "/error/**",
 
+
+                                    // web-setting
+                                    String.format("%s/web-settings", apiPrefix),
                                     // table
                                     String.format("%s/tables/**",apiPrefix)
 
