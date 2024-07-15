@@ -1,26 +1,17 @@
 package com.example.foodordering.controllers;
 
-import com.example.foodordering.dtos.MenuDTO;
-import com.example.foodordering.dtos.UserDTO;
-import com.example.foodordering.entities.User;
-import com.example.foodordering.dtos.NotificationMessage;
-import com.example.foodordering.response.Response;
+import com.example.foodordering.dtos.NotificationMessageDTO;
 import com.example.foodordering.services.CloudinaryService;
 import com.example.foodordering.services.MenuItemService;
 import com.example.foodordering.services.TokenService;
 import com.example.foodordering.services.UserService;
 import com.example.foodordering.services.fcm.FirebaseMessagingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.models.annotations.OpenAPI30;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -79,8 +70,8 @@ public class HomeController {
 
 
     @PostMapping("/notification")
-    public ResponseEntity<?> sendNotificationByToken(@RequestBody NotificationMessage notificationMessage) {
-        return ResponseEntity.ok().body(firebaseMessagingService.sendNotificationByToken(notificationMessage));
+    public ResponseEntity<?> sendNotificationByToken(@RequestBody NotificationMessageDTO notificationMessageDTO) {
+        return ResponseEntity.ok().body(firebaseMessagingService.sendNotificationByToken(notificationMessageDTO));
     }
 
 
