@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -24,10 +26,8 @@ public class CategoryService {
 
     @Transactional
     public Category createCategory(CategoryDTO categoryDTO){
-        Category category = categoryRepository.findByCategoryName(categoryDTO.getName());
-        if(category != null){
-            return category;
-        }
-        return categoryRepository.save(modelMapper.map(categoryDTO, Category.class));
+        Optional<Category> category = categoryRepository.findByCategoryName(categoryDTO.getName());
+
+        return category.orElseGet(() -> categoryRepository.save(modelMapper.map(categoryDTO, Category.class)));
     }
 }
