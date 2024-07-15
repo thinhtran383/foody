@@ -13,8 +13,8 @@ import java.util.List;
 @Builder
 public class MenuItemResponse {
     private int id;
-    private String name;
+    private String itemName;
     private BigDecimal price;
     private String image;
-    private String categoryName;
+    private String category;
 }

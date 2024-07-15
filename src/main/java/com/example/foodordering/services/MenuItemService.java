@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.awt.*;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,44 +42,64 @@ public class MenuItemService {
     }
 
     @Transactional(readOnly = true)
-    public Page<MenuItemResponse> getMenuByCategory(@NotNull Pageable pageable, String category){
+    public Page<MenuItemResponse> getMenuByCategory(@NotNull Pageable pageable, String category) {
         Page<MenuItem> menuItems = menuItemRepository.findMenuItemByCategory_CategoryName(pageable, category);
 
         return menuItems.map((element) -> modelMapper.map(element, MenuItemResponse.class));
     }
 
     @Transactional
-    public MenuItemResponse addNewMenuItem(@NotNull MenuDTO menuDTO) throws Exception {
-        MenuItem menuItem = modelMapper.map(menuDTO, MenuItem.class);
+    public MenuItemResponse createNewMenuItem(@NotNull MenuDTO menuDTO) throws Exception {
 
-        Category category = categoryRepository.findByCategoryName(menuDTO.getCategoryName());
+        // check category existed
+        Category category = categoryRepository.findByCategoryName(menuDTO.getCategoryName()).orElseThrow(() -> new DataNotFoundException("Category not found"));
+
+        Optional<MenuItem> existingItem = menuItemRepository.findByItemNameAndCategory_CategoryName(menuDTO.getItemName(), menuDTO.getCategoryName());
 
 
-        if(category == null) {
-           throw new DataNotFoundException("Category not found");
+        if (existingItem.isEmpty()) {
+            throw new DataIntegrityViolationException("Item already existed");
         }
 
+        MenuItem menuItem = modelMapper.map(menuDTO, MenuItem.class);
         menuItem.setCategory(category);
 
         return modelMapper.map(menuItemRepository.save(menuItem), MenuItemResponse.class);
+
     }
 
-    public MenuItemResponse updateMenuItem(Integer id, MenuDTO menuDTO)  throws Exception{
-       MenuItem menuItem = menuItemRepository.findById(id).orElseThrow();
-            Category category = categoryRepository.findByCategoryName(menuDTO.getCategoryName());
+    @Transactional
+    public MenuItemResponse updateMenuItem(Integer id, MenuDTO menuDTO) throws Exception {
+        MenuItem existingItem = menuItemRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Menu item not found"));
 
-            if(category == null) {
-                throw new DataNotFoundException("Category not found");
-            }
-
-            if(menuDTO.getItemName() != null) {
-                menuItem.setItemName(menuDTO.getItemName());
-            }
+        Category category = categoryRepository.findByCategoryName(menuDTO.getCategoryName())
+                .orElseThrow(() -> new DataNotFoundException("Category not found"));
 
 
+        if (menuDTO.getItemName() != null) {
+            existingItem.setItemName(menuDTO.getItemName());
+        }
 
+        if (menuDTO.getPrice() != null) {
+            existingItem.setPrice(menuDTO.getPrice());
+        }
 
+        if (menuDTO.getImage() != null) {
+            existingItem.setImage(menuDTO.getImage());
+        }
 
-            return modelMapper.map(menuItemRepository.save(menuItem), MenuItemResponse.class);
+        existingItem.setCategory(category);
+
+        return modelMapper.map(menuItemRepository.save(existingItem), MenuItemResponse.class);
+
+    }
+
+    @Transactional
+    public MenuItemResponse deleteMenuItem(Integer id) throws Exception {
+        MenuItem menuItem = menuItemRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Item not existed"));
+
+        menuItemRepository.deleteById(id);
+        return modelMapper.map(menuItem, MenuItemResponse.class);
     }
 }
