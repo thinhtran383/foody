@@ -91,7 +91,7 @@ public class MenuController {
         log.error(menuDTO.toString());
 
         try {
-            return ResponseEntity.ok().body(new Response("success", "Menu item created successfully", menuItemService.addNewMenuItem(menuDTO)));
+            return ResponseEntity.ok().body(new Response("success", "Menu item created successfully", menuItemService.createNewMenuItem(menuDTO)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response("error", e.getMessage(), null));
         }
@@ -103,6 +103,16 @@ public class MenuController {
 
         try {
             return ResponseEntity.ok().body(new Response("success", "Menu item updated successfully", menuItemService.updateMenuItem(id, menuDTO)));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response("error", e.getMessage(), null));
+        }
+    }
+
+    @DeleteMapping("/deleteItem/{id}")
+    public ResponseEntity<Response> deleteItem(@PathVariable Integer id){
+
+        try {
+            return ResponseEntity.ok().body(new Response("success", "deleted", menuItemService.deleteMenuItem(id)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Response("error", e.getMessage(), null));
         }
