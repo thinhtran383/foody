@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Data
 @Builder
-public class NotificationMessage {
+public class NotificationMessageDTO {
     private String recipientToken;
     private String title;
     private String body;

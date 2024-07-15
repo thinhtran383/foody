@@ -45,7 +45,7 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
     private UserInfo userInfo;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @ToString.Exclude
     private Set<Role> roles = new LinkedHashSet<>();
 

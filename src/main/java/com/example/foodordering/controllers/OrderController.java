@@ -43,25 +43,25 @@ public class OrderController {
     }
 
 
-    @Hidden
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
-    public Map<String, String> handleValidationExceptions(Exception ex) {
-        Map<String, String> errors = new HashMap<>();
-        if (ex instanceof MethodArgumentNotValidException validationEx) {
-            validationEx.getBindingResult().getAllErrors().forEach((error) -> {
-                String fieldName = ((FieldError) error).getField();
-                String errorMessage = error.getDefaultMessage();
-                errors.put(fieldName, errorMessage);
-            });
-        } else if (ex instanceof ConstraintViolationException constraintViolationEx) {
-            constraintViolationEx.getConstraintViolations().forEach((violation) -> {
-                String fieldName = "error";
-                String errorMessage = violation.getMessage();
-                errors.put(fieldName, errorMessage);
-            });
-        }
-        return errors;
-    }
+//    @Hidden
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
+//    public Map<String, String> handleValidationExceptions(Exception ex) {
+//        Map<String, String> errors = new HashMap<>();
+//        if (ex instanceof MethodArgumentNotValidException validationEx) {
+//            validationEx.getBindingResult().getAllErrors().forEach((error) -> {
+//                String fieldName = ((FieldError) error).getField();
+//                String errorMessage = error.getDefaultMessage();
+//                errors.put(fieldName, errorMessage);
+//            });
+//        } else if (ex instanceof ConstraintViolationException constraintViolationEx) {
+//            constraintViolationEx.getConstraintViolations().forEach((violation) -> {
+//                String fieldName = "error";
+//                String errorMessage = violation.getMessage();
+//                errors.put(fieldName, errorMessage);
+//            });
+//        }
+//        return errors;
+//    }
 
 }

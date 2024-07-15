@@ -8,12 +8,15 @@ import com.example.foodordering.repositories.RoleRepository;
 import com.example.foodordering.repositories.UserInfoRepository;
 import com.example.foodordering.repositories.UserRepository;
 import com.example.foodordering.repositories.UserRoleRepository;
+import com.example.foodordering.response.user.UserResponse;
 import com.example.foodordering.utils.JwtGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,9 +44,11 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtGenerator jwtGenerator;
 
-    @Transactional
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    @Transactional(readOnly = true)
+    public Page<User> getAllUsers(Pageable pageable){
+        Page<User> users = userRepository.findAll(pageable);
+
+        return users;
     }
 
     @Transactional
@@ -57,7 +62,7 @@ public class UserService {
 
         // check info user is already exist
         if (userInfoRepository.existsByPhone(userDTO.getPhoneNumber()) || userInfoRepository.existsByEmail(userDTO.getEmail())) {
-            throw new DataIntegrityViolationException("Phone number already exists");
+            throw new DataIntegrityViolationException("Phone number or Email already exists");
         }
 
         // Get role by ID
@@ -193,5 +198,7 @@ public class UserService {
         return userRepository.save(existingUser.get());
 
     }
+
+
 
 }
