@@ -24,8 +24,8 @@ public class Category {
     @Column(name = "categoryName")
     private String categoryName;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<MenuItem> menuItems = new LinkedHashSet<>();
+//    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private Set<MenuItem> menuItems = new LinkedHashSet<>();
 
 }
