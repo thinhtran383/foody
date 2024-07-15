@@ -83,6 +83,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 // Login
                 Pair.of(String.format("%s/users/**", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/**", apiPrefix), "PUT"),
+                Pair.of(String.format("%s/users/**", apiPrefix), "GET"),
+
                 Pair.of(String.format("%s/roles", apiPrefix), "GET"),
 
                 // Error
@@ -91,6 +93,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 //Menu
                 Pair.of(String.format("%s/menu/**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/menu", apiPrefix), "GET"),
+                Pair.of(String.format("%s/menu/**", apiPrefix), "DELETE"),
+                Pair.of(String.format("%s/menu/**", apiPrefix), "PUT"),
+
 
                 // Category
                 Pair.of(String.format("%s/categories", apiPrefix),"GET"),
@@ -111,7 +116,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
             if (requestPath.matches(path.replace("**", ".*"))
-                    && requestMethod.equals(method)) {
+                    && requestMethod.equalsIgnoreCase(method)) {
                 return true;
             }
 
