@@ -1,6 +1,6 @@
 package com.example.foodordering.services.fcm;
 
-import com.example.foodordering.dtos.NotificationMessage;
+import com.example.foodordering.dtos.NotificationMessageDTO;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -16,24 +16,24 @@ import java.util.Map;
 public class FirebaseMessagingService {
     private final FirebaseMessaging firebaseMessaging;
 
-    public String sendNotificationByToken(NotificationMessage notificationMessage) {
+    public String sendNotificationByToken(NotificationMessageDTO notificationMessageDTO) {
         Map<String, String> content = new HashMap<>();
 
-        content.put("title", notificationMessage.getTitle());
-        content.put("body", notificationMessage.getBody());
-        content.put("image", notificationMessage.getImage());
+        content.put("title", notificationMessageDTO.getTitle());
+        content.put("body", notificationMessageDTO.getBody());
+        content.put("image", notificationMessageDTO.getImage());
 
 
         Notification notification = Notification
                 .builder()
-                .setTitle(notificationMessage.getTitle())
-                .setBody(notificationMessage.getBody())
-                .setImage(notificationMessage.getImage())
+                .setTitle(notificationMessageDTO.getTitle())
+                .setBody(notificationMessageDTO.getBody())
+                .setImage(notificationMessageDTO.getImage())
                 .build();
 
         Message message = Message
                 .builder()
-                .setToken(notificationMessage.getRecipientToken())
+                .setToken(notificationMessageDTO.getRecipientToken())
                 .setNotification(notification)
                 .putAllData(content)
                 .build();
