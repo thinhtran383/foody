@@ -17,7 +17,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({Exception.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
     public Map<String, String> handleValidationExceptions(Exception ex) {
         Map<String, String> errors = new HashMap<>();
         if (ex instanceof MethodArgumentNotValidException validationEx) {
