@@ -21,7 +21,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<Response> getAll(
             @RequestParam(defaultValue = "0", required = false)
             int page,
