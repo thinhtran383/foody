@@ -19,8 +19,8 @@ import java.io.IOException;
 @Slf4j
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        log.error("Access denied: {}", accessDeniedException.getMessage());
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        log.error("{}", "accessDeniedException");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }
