@@ -11,7 +11,9 @@ import com.example.foodordering.response.Response;
 import com.example.foodordering.response.user.UserResponse;
 import com.example.foodordering.services.TokenService;
 import com.example.foodordering.services.UserService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +66,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Response> login(@RequestBody @Valid UserLoginDTO userLoginDTO, @RequestParam(defaultValue = "false") boolean isAdmin) {
+    @Operation(description = "roleID = 1 is for user, roleID = 2 is for admin")
+    public ResponseEntity<Response> login(
+            @RequestBody @Valid UserLoginDTO userLoginDTO,
+            @RequestParam(defaultValue = "false") boolean isAdmin
+    ) {
 
         try {
             String tokenGenerate = userService.login(userLoginDTO.getUsername(), userLoginDTO.getPassword());
@@ -111,8 +117,9 @@ public class UserController {
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<Response> update(@PathVariable Long userId,
-                                           @RequestBody @Valid UpdateUserDTO updateUserDTO
+    public ResponseEntity<Response> update(
+            @PathVariable Long userId,
+            @RequestBody @Valid UpdateUserDTO updateUserDTO
     ) {
         try {
             User userDTOUpdated = userService.updateInfo(userId, updateUserDTO);
