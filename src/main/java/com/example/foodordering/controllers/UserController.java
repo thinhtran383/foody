@@ -66,7 +66,6 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @Operation(description = "roleID = 1 is for user, roleID = 2 is for admin")
     public ResponseEntity<Response> login(
             @RequestBody @Valid UserLoginDTO userLoginDTO,
             @RequestParam(defaultValue = "false") boolean isAdmin
@@ -107,6 +106,7 @@ public class UserController {
 
 
     @PostMapping("/create")
+    @Operation(description = "roleID = 1 is for user, roleID = 2 is for admin")
     public ResponseEntity<Response> create(@RequestBody @Valid UserDTO userDTO) {
         try {
 
