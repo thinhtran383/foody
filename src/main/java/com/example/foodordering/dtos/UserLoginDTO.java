@@ -1,5 +1,6 @@
 package com.example.foodordering.dtos;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -16,6 +17,7 @@ public class UserLoginDTO {
     @NotBlank(message = "Password is required")
     private String password;
 
+    @Hidden
     private Integer roleId;
 
 }
