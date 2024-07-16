@@ -1,11 +1,16 @@
 package com.example.foodordering.exceptions;
 
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.security.SignatureException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,4 +35,13 @@ public class GlobalExceptionHandler {
         }
         return errors;
     }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<String> handleNoHandlerFoundException(NoHandlerFoundException ex) {
+        return new ResponseEntity<>("Resource not found", HttpStatus.NOT_FOUND);
+    }
+
+
+
+
 }
