@@ -81,6 +81,10 @@ public class WebSecurityConfig {
                     ).permitAll();
 
                     request.requestMatchers(
+                            String.format("%s/tables/all", apiPrefix)
+                    ).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
+
+                    request.requestMatchers(
                             String.format("%s/tables/**", apiPrefix),
                             String.format("%s/orders/**", apiPrefix),
                             String.format("%s/categories/**", apiPrefix),
@@ -91,9 +95,10 @@ public class WebSecurityConfig {
                             String.format("%s/payment/**", apiPrefix),
                             String.format("%s/notification/**", apiPrefix)
 
-                    ).hasAnyAuthority("ROLE_ADMIN")
+                    ).hasAuthority("ROLE_ADMIN")
                             .anyRequest()
                             .authenticated();
+
 
                 })
                 .authenticationProvider(authenticationProvider)
