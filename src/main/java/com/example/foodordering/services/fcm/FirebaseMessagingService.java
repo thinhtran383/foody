@@ -1,6 +1,8 @@
 package com.example.foodordering.services.fcm;
 
 import com.example.foodordering.dtos.NotificationMessageDTO;
+import com.example.foodordering.entities.DeviceToken;
+import com.example.foodordering.repositories.DeviceTokenRepository;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -9,12 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class FirebaseMessagingService {
     private final FirebaseMessaging firebaseMessaging;
+    private final DeviceTokenRepository deviceTokenRepository;
 
     public String sendNotificationByToken(NotificationMessageDTO notificationMessageDTO) {
         Map<String, String> content = new HashMap<>();
@@ -44,5 +48,17 @@ public class FirebaseMessagingService {
             throw new RuntimeException(e);
         }
         return "success sending notification";
+    }
+
+    public String sendNotificationToAll(NotificationMessageDTO notificationMessageDTO){
+        List<DeviceToken> deviceTokens = deviceTokenRepository.findAll();
+
+        for(DeviceToken deviceToken : deviceTokens){
+            notificationMessageDTO.setRecipientToken(deviceToken.getToken());
+            sendNotificationByToken(notificationMessageDTO);
+        }
+
+        return "success sending notification to all";
+
     }
 }
