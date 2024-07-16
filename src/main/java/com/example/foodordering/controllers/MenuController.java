@@ -33,7 +33,7 @@ public class MenuController {
     private final MenuItemService menuItemService;
     private final CloudinaryService cloudinaryService;
 
-    @GetMapping()
+    @GetMapping("/all")
     @Operation(summary = "Get menu items", responses = {
             @ApiResponse(responseCode = "200", description = "Menu items retrieved successfully", content = @Content(schema = @Schema(implementation = Response.class)))})
 
@@ -43,7 +43,6 @@ public class MenuController {
             @RequestParam(defaultValue = "5", required = false)
             int limit
     ) {
-        log.error("{} {}", page, limit);
 
         Pageable pageable = PageRequest.of(page, limit, Sort.by("id").ascending());
 
