@@ -1,6 +1,7 @@
 package com.example.foodordering.exceptions;
 
 import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.example.foodordering.response.Response;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<String> handleNoHandlerFoundException(NoHandlerFoundException ex) {
         return new ResponseEntity<>("Resource not found", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<?> handleDataNotFound(DataNotFoundException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
 

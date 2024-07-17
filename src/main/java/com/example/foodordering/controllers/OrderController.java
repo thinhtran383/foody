@@ -2,6 +2,9 @@ package com.example.foodordering.controllers;
 
 import com.example.foodordering.dtos.OrderItemDTO;
 import com.example.foodordering.entities.Table;
+import com.example.foodordering.exceptions.DataNotFoundException;
+import com.example.foodordering.response.Response;
+import com.example.foodordering.response.orders.OrderResponse;
 import com.example.foodordering.services.OrderService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,24 +27,41 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("${api.v1.prefix}/order")
+@RequestMapping("${api.v1.prefix}/orders")
 @RequiredArgsConstructor
 @Validated
 @Tag(name = "OrderController", description = "Operations pertaining to orders in Food Ordering System")
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/create")
+    @PostMapping()
     @ApiResponse(content = @Content(schema = @Schema(implementation = OrderItemDTO.class), mediaType = "application/json"))
-    public ResponseEntity<?> createOrder(@Valid @RequestParam int tableId, @Valid @RequestBody List<OrderItemDTO> orderDetails) {
-        try {
-            orderService.createOrder(tableId, orderDetails);
-            return ResponseEntity.ok().body(orderDetails);
-        } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Response> createOrder(@Valid @RequestParam int tableId, @Valid @RequestBody List<OrderItemDTO> orderDetails) throws Exception {
+
+
+        return ResponseEntity.ok().body(
+                new Response("success",
+                        "Retrieved successfully",
+                        orderService.createOrUpdateOrder(tableId, orderDetails))
+        );
+
     }
 
+    @GetMapping("/getOrderDetails")
+    public ResponseEntity<Response> getOrderDetails(@Valid @RequestParam int tableId) throws DataNotFoundException {
+        return ResponseEntity.ok().body(
+                new Response("success",
+                        "Retrieved successfully",
+                        orderService.getAllOrderByTableId(tableId))
+        );
+    }
+
+    @PostMapping("test")
+    public String test(@RequestParam int tableId) throws DataNotFoundException {
+//        orderService.paymentOrder(tableId);
+        orderService.getAllOrderByTableId(tableId);
+        return "ok";
+    }
 
 //    @Hidden
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -73,7 +73,10 @@ public class WebSecurityConfig {
                                     String.format("%s/notification", apiPrefix),
 
                                     //table
-                                    String.format("%s/tables/all", apiPrefix)
+                                    String.format("%s/tables/all", apiPrefix),
+
+                                    //order
+                                    String.format("%s/orders/getOrderDetails", apiPrefix)
 
 
                             )
@@ -82,7 +85,7 @@ public class WebSecurityConfig {
                     request.requestMatchers(HttpMethod.POST,      // for user
                             String.format("%s/users/login", apiPrefix),
                             "/notification",
-                            String.format("%s/orders/create", apiPrefix)
+                            String.format("%s/orders", apiPrefix)
 
                     ).permitAll();
 

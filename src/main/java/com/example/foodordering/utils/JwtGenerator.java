@@ -60,7 +60,7 @@ public class JwtGenerator {
         String username = extractUsername(token);
         Token existingToken = tokenRepository.findByToken(token);
 
-        if(token == null || existingToken == null){
+        if (token == null || existingToken == null) {
             return false;
         }
         return username.equals(userDetails.getUsername());
@@ -71,6 +71,7 @@ public class JwtGenerator {
         return JWT.require(Algorithm.HMAC256(secretKey))
                 .build()
                 .verify(token);
+
     }
 
 

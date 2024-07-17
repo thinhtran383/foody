@@ -27,8 +27,8 @@ public class HomeController {
     private final TokenService tokenService;
     private final ModelMapper modelMapper;
 
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    @GetMapping("/hello")
+
+    @GetMapping("/test")
     public String home() {
         return """
                 Welcome to FoodOrdering!:)

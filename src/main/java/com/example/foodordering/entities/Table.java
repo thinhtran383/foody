@@ -24,8 +24,8 @@ public class Table {
     @Column(name = "status")
     private String status;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "table")
-    private Set<Order> orders = new LinkedHashSet<>();
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "table")
+//    private Set<Order> orders = new LinkedHashSet<>();
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Service
@@ -35,13 +36,13 @@ public class TableService {
         tableRepository.save(table);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Table> getAllTables() {
         return tableRepository.findAll();
     }
 
     @Transactional
-    public Table getTableById(int tableId) {
-        return tableRepository.findById(tableId).orElseThrow();
+    public Optional<Table> getTableById(int tableId) {
+        return tableRepository.findById(tableId);
     }
 }

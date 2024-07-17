@@ -11,6 +11,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Builder
+@ToString
 @jakarta.persistence.Table(name = "orders", schema = "foody")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,12 +29,14 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tableId")
+    @ToString.Exclude
     private Table table;
 
     @Column(name = "createdTime")
     private Instant createdTime;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 
 

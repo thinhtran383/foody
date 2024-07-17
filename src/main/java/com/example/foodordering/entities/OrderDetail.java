@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @Builder
 @Entity
+@ToString
 @Table(name = "orderDetails", schema = "foody")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,10 +20,12 @@ public class OrderDetail {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "orderId")
+    @ToString.Exclude
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId", referencedColumnName = "itemId")
+    @ToString.Exclude
     private MenuItem item;
 
     @Column(name = "quantity")

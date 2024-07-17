@@ -16,5 +16,5 @@ public class OrderItemDTO {
     @Min(value = 1, message = "Quantity must be greater than 0")
     private int quantity;
 
-    private int orderId;
+
 }
