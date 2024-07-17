@@ -123,6 +123,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 // notification
                 Pair.of(String.format("%s/notification", apiPrefix), "POST"),
 
+                // orders
+                Pair.of(String.format("%s/orders/create", apiPrefix), "POST"),
 
                 // Table
                 Pair.of(String.format("%s/tables/all", apiPrefix), "GET")

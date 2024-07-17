@@ -74,12 +74,15 @@ public class WebSecurityConfig {
 
                                     //table
                                     String.format("%s/tables/all", apiPrefix)
+
+
                             )
                             .permitAll();
 
                     request.requestMatchers(HttpMethod.POST,      // for user
                             String.format("%s/users/login", apiPrefix),
-                            "/notification"
+                            "/notification",
+                            String.format("%s/orders/create", apiPrefix)
 
                     ).permitAll();
 
