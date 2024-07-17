@@ -70,7 +70,10 @@ public class WebSecurityConfig {
                                     String.format("%s/categories/all", apiPrefix),
 
                                     // notification
-                                    String.format("%s/notification", apiPrefix)
+                                    String.format("%s/notification", apiPrefix),
+
+                                    //table
+                                    String.format("%s/tables/all", apiPrefix)
                             )
                             .permitAll();
 
@@ -81,8 +84,9 @@ public class WebSecurityConfig {
                     ).permitAll();
 
                     request.requestMatchers(
-                            String.format("%s/tables/all", apiPrefix),
-                            String.format("%s/notification/**", apiPrefix)
+
+                            String.format("%s/notification/**", apiPrefix),
+                            String.format("%s/orders/**", apiPrefix)
                     ).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
 
                     request.requestMatchers(
