@@ -58,7 +58,7 @@ public class MenuItemService {
         Optional<MenuItem> existingItem = menuItemRepository.findByItemNameAndCategory_CategoryName(menuDTO.getItemName(), menuDTO.getCategoryName());
 
 
-        if (existingItem.isEmpty()) {
+        if (existingItem.isPresent()) {
             throw new DataIntegrityViolationException("Item already existed");
         }
 
