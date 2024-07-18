@@ -21,8 +21,8 @@ public class UserDTO {
     @NotBlank(message = "Password is required")
     private String password;
 
-    @NotBlank(message = "Name is required")
-    private String name;
+    @NotBlank(message = "Fullname is required")
+    private String fullname;
 
     @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Invalid email")
     private String email;

@@ -84,7 +84,7 @@ public class UserService {
         UserInfo userInfo = UserInfo.builder()
                 .users(newUser)
                 .address(userDTO.getAddress())
-                .name(userDTO.getName())
+                .name(userDTO.getFullname())
                 .email(userDTO.getEmail())
                 .phone(userDTO.getPhoneNumber())
                 .build();
