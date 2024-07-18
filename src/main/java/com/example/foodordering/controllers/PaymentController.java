@@ -48,7 +48,7 @@ public class PaymentController {
             String redirectUrl = "http://localhost:8080/home/pay-success";
             String ipnUrl = String.format("https://local.thinhtran.online/api/v1/payment/momo/%s", tableId);
 
-            return ResponseEntity.ok().body(paymentService.payWithMoMo(orderId, amount, redirectUrl, ipnUrl));
+            return ResponseEntity.ok().body(new Response("success", "", paymentService.payWithMoMo(orderId, amount, redirectUrl, ipnUrl)));
         } else {
             orderService.paymentOrder(tableId);
             return ResponseEntity.ok().body(new Response("success", "pay-success", "Payment success"));
