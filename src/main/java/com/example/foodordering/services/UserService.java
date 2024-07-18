@@ -165,8 +165,8 @@ public class UserService {
 
         UserInfo userInfoExisting = existingUser.get().getUserInfo();
         // update user
-        if (updatedUserDTO.getFullName() != null) {
-            userInfoExisting.setName(updatedUserDTO.getFullName());
+        if (updatedUserDTO.getFullname() != null) {
+            userInfoExisting.setName(updatedUserDTO.getFullname());
         }
 
         if (updatedUserDTO.getPhoneNumber() != null) {
