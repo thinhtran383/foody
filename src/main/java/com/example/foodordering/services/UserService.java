@@ -43,7 +43,7 @@ public class UserService {
     private final JwtGenerator jwtGenerator;
 
     @Transactional(readOnly = true)
-    public Page<User> getAllUsers(Pageable pageable){
+    public Page<User> getAllUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
 
         return users;
@@ -175,13 +175,13 @@ public class UserService {
             userInfoExisting.setAddress(updatedUserDTO.getAddress());
         }
 
-        if(updatedUserDTO.getEmail() != null){
+        if (updatedUserDTO.getEmail() != null) {
             userInfoExisting.setEmail(updatedUserDTO.getEmail());
         }
 
         if (updatedUserDTO.getPassword() != null
                 && !updatedUserDTO.getPassword().isEmpty()) {
-            if (!updatedUserDTO.getPassword().equals(updatedUserDTO.getRetypePassword())){ // check retype password
+            if (!updatedUserDTO.getPassword().equals(updatedUserDTO.getRetypePassword())) { // check retype password
                 throw new DataNotFoundException("Password not match");
             }
 
@@ -199,12 +199,18 @@ public class UserService {
 
 
     @Transactional
-    public User deleteUserByUserId(long  userId) throws Exception {
-        User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("User not found"));
+    public User deleteUserByUserId(long userId) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+//        boolean isAdmin = user.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.toString().equals("ROLE_ADMIN"));
+//        if (isAdmin) {
+//            throw new IllegalStateException("Cannot delete admin account");
+//        }
+
 
         tokenRepository.deleteByUser(user);
         userInfoRepository.delete(user.getUserInfo());
-
 
 
         userRoleIdRepository.deleteByUser(user);
