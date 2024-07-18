@@ -56,12 +56,7 @@ public class OrderController {
         );
     }
 
-    @PostMapping("test")
-    public String test(@RequestParam int tableId) throws DataNotFoundException {
-//        orderService.paymentOrder(tableId);
-        orderService.getAllOrderByTableId(tableId);
-        return "ok";
-    }
+
 
 //    @Hidden
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)

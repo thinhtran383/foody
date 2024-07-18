@@ -5,6 +5,7 @@ import com.example.foodordering.response.PaymentResponse;
 import com.example.foodordering.response.Response;
 import com.example.foodordering.services.OrderService;
 import com.example.foodordering.services.PaymentService;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,6 +69,7 @@ public class PaymentController {
         }
     }
 
+    @Hidden
     @PostMapping("/momo/{tableId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     private String payWithMoMo(@PathVariable int tableId) throws DataNotFoundException {

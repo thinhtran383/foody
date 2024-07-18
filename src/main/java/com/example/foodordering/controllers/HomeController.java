@@ -7,6 +7,7 @@ import com.example.foodordering.services.MenuItemService;
 import com.example.foodordering.services.TokenService;
 import com.example.foodordering.services.UserService;
 import com.example.foodordering.services.fcm.FirebaseMessagingService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/home")
 @Tag(name = "Root", description = "Root for testing the API")
+@Hidden
 public class HomeController {
     private final CloudinaryService cloudinaryService;
     private final FirebaseMessagingService firebaseMessagingService;
