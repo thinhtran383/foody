@@ -9,6 +9,7 @@ import com.example.foodordering.exceptions.DataNotFoundException;
 import com.example.foodordering.repositories.OrderDetailRepository;
 import com.example.foodordering.repositories.OrderRepository;
 import com.example.foodordering.repositories.TableRepository;
+import com.example.foodordering.response.PaymentResponse;
 import com.example.foodordering.response.orders.OrderDetailResponse;
 import com.example.foodordering.response.orders.OrderResponse;
 import lombok.RequiredArgsConstructor;
@@ -125,7 +126,7 @@ public class OrderService {
 
 
     @Transactional
-    public void paymentOrder(int tableId) throws DataNotFoundException {
+    public PaymentResponse paymentOrder(int tableId) throws DataNotFoundException {
         Order orderToPay = orderRepository.findByTable_id(tableId).orElseThrow(() -> new DataNotFoundException("TableID not existed"));
 
 
@@ -138,6 +139,13 @@ public class OrderService {
         tableRepository.save(table);
 
         orderRepository.save(orderToPay);
+
+        PaymentResponse paymentResponse = PaymentResponse.builder()
+                .orderId(orderToPay.getId())
+                .totalMoney(getTotalMoneyByOrder(orderToPay))
+                .build();
+
+        return paymentResponse;
 
     }
 

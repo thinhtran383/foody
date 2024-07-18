@@ -135,7 +135,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 Pair.of(String.format("%s/payment/**", apiPrefix), "POST")
 
 
-                );
+        );
 
         String requestPath = request.getServletPath();
         String requestMethod = request.getMethod();
