@@ -37,9 +37,10 @@ public class PaymentController {
             @RequestParam(defaultValue = "false", required = false)
             boolean isMoMo
     ) throws DataNotFoundException {
-        PaymentResponse paymentResponse = orderService.paymentOrder(tableId);
+
 
         if(isMoMo){
+            PaymentResponse paymentResponse = orderService.paymentOrder(tableId);
             String orderId = String.valueOf(paymentResponse.getOrderId());
             long amount = paymentResponse.getTotalMoney().longValue();
 
@@ -48,6 +49,7 @@ public class PaymentController {
 
             return ResponseEntity.ok().body(paymentService.payWithMoMo(orderId, amount, redirectUrl, ipnUrl));
         } else {
+            orderService.paymentOrder(tableId);
             return ResponseEntity.ok().body(new Response("success", "pay-success", "Payment success"));
         }
     }
