@@ -76,7 +76,8 @@ public class WebSecurityConfig {
                                     String.format("%s/tables/all", apiPrefix),
 
                                     //order
-                                    String.format("%s/orders/getOrderDetails", apiPrefix)
+                                    String.format("%s/orders/getOrderDetails", apiPrefix),
+                                    "/home/**"
 
 
                             )
@@ -92,7 +93,8 @@ public class WebSecurityConfig {
                     request.requestMatchers(
 
                             String.format("%s/notification/**", apiPrefix),
-                            String.format("%s/orders/**", apiPrefix)
+                            String.format("%s/orders/**", apiPrefix),
+                            String.format("%s/payment/**", apiPrefix)
                     ).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
 
                     request.requestMatchers(

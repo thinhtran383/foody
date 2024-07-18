@@ -115,7 +115,7 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         OrderResponse orderResponse = OrderResponse.builder()
-                .orderDetails(orderDetailResponses) // Use the new field name here
+                .orderDetails(orderDetailResponses)
                 .tableId(tableId)
                 .totalMoney(getTotalMoneyByOrder(order))
                 .build();
@@ -151,7 +151,7 @@ public class OrderService {
                 .stream()
                 .map(orderDetail -> {
                     OrderDetailResponse response = modelMapper.map(orderDetail, OrderDetailResponse.class);
-                    response.setPrice(orderDetail.getItem().getPrice()); // Set the price here
+                    response.setPrice(orderDetail.getItem().getPrice()); // Set the price
                     return response;
                 })
                 .toList();

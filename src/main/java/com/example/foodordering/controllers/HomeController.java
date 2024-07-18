@@ -1,6 +1,7 @@
 package com.example.foodordering.controllers;
 
 import com.example.foodordering.dtos.NotificationMessageDTO;
+import com.example.foodordering.response.Response;
 import com.example.foodordering.services.CloudinaryService;
 import com.example.foodordering.services.MenuItemService;
 import com.example.foodordering.services.TokenService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/home")
 @Tag(name = "Root", description = "Root for testing the API")
 public class HomeController {
     private final CloudinaryService cloudinaryService;
@@ -36,6 +37,11 @@ public class HomeController {
                 Please check the API documentation at /swagger-ui.html
                 Please check the API documentation at /redoc.html
                 """;
+    }
+
+    @GetMapping("/pay-success")
+    public ResponseEntity<Response> paySuccess() {
+        return ResponseEntity.ok().body(new Response("success", "pay-success", "Payment success"));
     }
 
 //    @GetMapping("/test")

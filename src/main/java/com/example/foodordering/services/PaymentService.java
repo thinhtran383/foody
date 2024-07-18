@@ -67,7 +67,7 @@ public class PaymentService {
 
         Map<String, String> responseBody = response.getBody();
         System.out.println(responseBody);
-        return "redirect:" + responseBody.get("payUrl");
+        return responseBody.get("payUrl");
     }
 
     private String hmacSHA256(String data, String key) {

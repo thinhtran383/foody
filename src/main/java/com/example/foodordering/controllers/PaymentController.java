@@ -13,15 +13,16 @@ import java.util.Random;
 public class PaymentController {
     private final PaymentService paymentService;
 
-    @GetMapping
+    @GetMapping("/momo")
     public String payWithMoMo(
     ) {
 
         String orderId = RandomStringUtils.randomAlphanumeric(10);
         long amount = 1000;
-        String redirectUrl = "http://localhost:8080";
-        String ipnUrl = "http://localhost:8080/done";
+        String redirectUrl = "https://api.thinhtran.online/home/pay-success";
+        String ipnUrl = "https://api.thinhtran.online/";
 
         return paymentService.payWithMoMo(orderId, amount, redirectUrl, ipnUrl);
     }
+
 }

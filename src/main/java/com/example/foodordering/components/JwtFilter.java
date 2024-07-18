@@ -128,7 +128,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 Pair.of(String.format("%s/orders/getOrderDetails", apiPrefix), "GET"),
 
                 // Table
-                Pair.of(String.format("%s/tables/all", apiPrefix), "GET")
+                Pair.of(String.format("%s/tables/all", apiPrefix), "GET"),
+                Pair.of("/home/**", "GET")
+
+
 
         );
 
