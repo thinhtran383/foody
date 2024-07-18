@@ -1,5 +1,6 @@
 package com.example.foodordering.services.websetting;
 
+import com.example.foodordering.dtos.WebSettingUpdateDTO;
 import com.example.foodordering.entities.WebSetting;
 import com.example.foodordering.repositories.WebSettingRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,18 +33,26 @@ public class WebSettingService {
     }
 
     @Transactional
-    public WebSetting updateWebSetting(WebSetting webSetting) {
+    public WebSetting updateWebSetting(WebSettingUpdateDTO webSetting) {
         Optional<WebSetting> webSettingOptional = webSettingRepository.findById(webSetting.getId());
 
-        if(webSettingOptional.isPresent()) {
-            WebSetting webSettingUpdate = webSettingOptional.get();
-            webSettingUpdate.setFullname(webSetting.getFullname());
-            webSettingUpdate.setEmail(webSetting.getEmail());
-            webSettingUpdate.setPhone(webSetting.getPhone());
-            webSettingUpdate.setAddress(webSetting.getAddress());
-            webSettingUpdate.setImageUrl(webSetting.getImageUrl());
-            return  webSettingRepository.save(webSettingUpdate);
-        }
+       if (webSettingOptional.isPresent()) {
+                WebSetting webSettingUpdate = webSettingOptional.get();
+               if(webSetting.getFullname() != null){
+                   webSettingUpdate.setFullname(webSetting.getFullname());
+               }
+                if(webSetting.getEmail() != null){
+                     webSettingUpdate.setEmail(webSetting.getEmail());
+                }
+                if(webSetting.getPhoneNumber() != null){
+                    webSettingUpdate.setPhoneNumber(webSetting.getPhoneNumber());
+                }
+                if(webSetting.getAddress() != null){
+                    webSettingUpdate.setAddress(webSetting.getAddress());
+                }
+                return webSettingRepository.save(webSettingUpdate);
+
+            }
 
         return null;
 

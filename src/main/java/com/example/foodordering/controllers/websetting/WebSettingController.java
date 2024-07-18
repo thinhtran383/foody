@@ -1,5 +1,6 @@
 package com.example.foodordering.controllers.websetting;
 
+import com.example.foodordering.dtos.WebSettingUpdateDTO;
 import com.example.foodordering.entities.WebSetting;
 import com.example.foodordering.response.Response;
 import com.example.foodordering.services.websetting.WebSettingService;
@@ -22,7 +23,7 @@ public class WebSettingController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Response> updateWebSetting(@RequestBody WebSetting webSetting) {
+    public ResponseEntity<Response> updateWebSetting(@RequestBody WebSettingUpdateDTO webSetting) {
         webSetting.setId(1L);
         return ResponseEntity.ok().body(new Response("success", "Web settings updated successfully", webSettingService.updateWebSetting(webSetting)));
     }

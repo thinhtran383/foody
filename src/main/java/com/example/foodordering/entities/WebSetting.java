@@ -31,7 +31,7 @@ public class WebSetting {
     @Size(max = 255)
     @NotNull
     @Column(name = "phone", nullable = false)
-    private String phone;
+    private String phoneNumber;
 
     @Size(max = 255)
     @NotNull
