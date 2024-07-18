@@ -4,10 +4,7 @@ import com.example.foodordering.dtos.UpdateUserDTO;
 import com.example.foodordering.dtos.UserDTO;
 import com.example.foodordering.entities.*;
 import com.example.foodordering.exceptions.DataNotFoundException;
-import com.example.foodordering.repositories.RoleRepository;
-import com.example.foodordering.repositories.UserInfoRepository;
-import com.example.foodordering.repositories.UserRepository;
-import com.example.foodordering.repositories.UserRoleRepository;
+import com.example.foodordering.repositories.*;
 import com.example.foodordering.response.user.UserResponse;
 import com.example.foodordering.utils.JwtGenerator;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +31,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
+    private final TokenRepository tokenRepository;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -200,5 +198,18 @@ public class UserService {
     }
 
 
+    @Transactional
+    public User deleteUserByUserId(long  userId) throws Exception {
+        User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("User not found"));
 
+        tokenRepository.deleteByUser(user);
+        userInfoRepository.delete(user.getUserInfo());
+
+
+
+        userRoleIdRepository.deleteByUser(user);
+        userRepository.deleteById(userId);
+
+        return user;
+    }
 }

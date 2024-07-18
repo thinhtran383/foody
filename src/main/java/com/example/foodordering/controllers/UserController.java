@@ -131,6 +131,16 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<Response> delete(@PathVariable Long userId) {
+        try {
+            return ResponseEntity.ok().body(new Response("success", "User deleted successfully", UserResponse.fromUser( userService.deleteUserByUserId(userId))));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Response("error", e.getMessage(), null));
+        }
+    }
+
+
 
 //    @Hidden
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)

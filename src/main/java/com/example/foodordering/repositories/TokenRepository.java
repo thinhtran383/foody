@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface TokenRepository extends JpaRepository<Token, Long>{
     Token findByToken(String token);
     Token findByUser(User user);
+
+    long deleteByUser(User user);
 }
