@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Builder
 public class UpdateUserDTO {
-    private String fullName;
+    private String fullname;
 
     @Pattern(regexp = "^[0-9]{10}$", message = "Invalid phone number")
     private String phoneNumber;

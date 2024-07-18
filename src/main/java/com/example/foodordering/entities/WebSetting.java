@@ -21,7 +21,7 @@ public class WebSetting {
     @Size(max = 255)
     @NotNull
     @Column(name = "name", nullable = false)
-    private String name;
+    private String fullname;
 
     @Size(max = 255)
     @NotNull

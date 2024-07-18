@@ -22,7 +22,7 @@ public class UserResponse {
 
     private String username;
 
-    private String name;
+    private String fullname;
 
     private String email;
 
@@ -42,7 +42,7 @@ public class UserResponse {
         return UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .name(userInfo.getName())
+                .fullname(userInfo.getName())
                 .email(userInfo.getEmail())
                 .phoneNumber(userInfo.getPhone())
                 .address(userInfo.getAddress())
