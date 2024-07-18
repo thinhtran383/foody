@@ -19,17 +19,17 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final OrderService orderService;
 
-    @GetMapping("/momo")
-    public String payWithMoMo(
-    ) {
-
-        String orderId = RandomStringUtils.randomAlphanumeric(10);
-        long amount = 1000;
-        String redirectUrl = "https://api.thinhtran.online/home/pay-success";
-        String ipnUrl = "https://api.thinhtran.online/";
-
-        return paymentService.payWithMoMo(orderId, amount, redirectUrl, ipnUrl);
-    }
+//    @GetMapping("/momo")
+//    public String payWithMoMo(
+//    ) {
+//
+//        String orderId = RandomStringUtils.randomAlphanumeric(10);
+//        long amount = 1000;
+//        String redirectUrl = "https://api.thinhtran.online/home/pay-success";
+//        String ipnUrl = "https://api.thinhtran.online/";
+//
+//        return paymentService.payWithMoMo(orderId, amount, redirectUrl, ipnUrl);
+//    }
 
     @PostMapping("{tableId}")
     public ResponseEntity<?> pay(
