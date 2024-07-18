@@ -1,6 +1,7 @@
 package com.example.foodordering.controllers;
 
 import com.example.foodordering.dtos.MenuDTO;
+import com.example.foodordering.dtos.MenuUpdateDTO;
 import com.example.foodordering.entities.MenuItem;
 import com.example.foodordering.response.Response;
 import com.example.foodordering.response.menu.ListMenuItemResponse;
@@ -97,7 +98,7 @@ public class MenuController {
     }
 
     @PutMapping("/updateItem/{id}")
-    public ResponseEntity<Response> updateItem(@PathVariable Integer id, @RequestBody @Valid MenuDTO menuDTO) {
+    public ResponseEntity<Response> updateItem(@PathVariable Integer id, @RequestBody @Valid MenuUpdateDTO menuDTO) {
         log.error(menuDTO.toString());
 
         try {

@@ -1,6 +1,7 @@
 package com.example.foodordering.services;
 
 import com.example.foodordering.dtos.MenuDTO;
+import com.example.foodordering.dtos.MenuUpdateDTO;
 import com.example.foodordering.entities.Category;
 import com.example.foodordering.entities.MenuItem;
 import com.example.foodordering.exceptions.DataNotFoundException;
@@ -69,7 +70,7 @@ public class MenuItemService {
     }
 
     @Transactional
-    public MenuItemResponse updateMenuItem(Integer id, MenuDTO menuDTO) throws Exception {
+    public MenuItemResponse updateMenuItem(Integer id, MenuUpdateDTO menuDTO) throws Exception {
         MenuItem existingItem = menuItemRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Menu item not found"));
 
