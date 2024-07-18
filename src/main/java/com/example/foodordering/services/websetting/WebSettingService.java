@@ -37,7 +37,7 @@ public class WebSettingService {
 
         if(webSettingOptional.isPresent()) {
             WebSetting webSettingUpdate = webSettingOptional.get();
-            webSettingUpdate.setName(webSetting.getName());
+            webSettingUpdate.setFullname(webSetting.getFullname());
             webSettingUpdate.setEmail(webSetting.getEmail());
             webSettingUpdate.setPhone(webSetting.getPhone());
             webSettingUpdate.setAddress(webSetting.getAddress());
