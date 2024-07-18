@@ -150,6 +150,17 @@ public class OrderService {
     }
 
     @Transactional
+    public PaymentResponse getPaymentInfo(int tableId) throws DataNotFoundException {
+        Order order = orderRepository.findByTable_id(tableId)
+                .orElseThrow(() -> new DataNotFoundException("TableID not existed"));
+
+        return PaymentResponse.builder()
+                .orderId(order.getId())
+                .totalMoney(getTotalMoneyByOrder(order))
+                .build();
+    }
+
+    @Transactional
     public OrderResponse getAllOrderByTableId(int tableId) throws DataNotFoundException {
         Order order = orderRepository.findByTable_id(tableId)
                 .orElseThrow(() -> new DataNotFoundException("TableID not existed"));
