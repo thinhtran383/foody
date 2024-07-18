@@ -1,13 +1,13 @@
 package com.example.foodordering.controllers.websetting;
 
+import com.example.foodordering.entities.WebSetting;
 import com.example.foodordering.response.Response;
 import com.example.foodordering.services.websetting.WebSettingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${api.v1.prefix}/web-settings")
@@ -19,5 +19,11 @@ public class WebSettingController {
     @GetMapping
     public ResponseEntity<Response> getWebSettings() {
         return ResponseEntity.ok().body(new Response("success", "Web settings retrieved successfully", webSettingService.getWebSetting()));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Response> updateWebSetting(@RequestBody WebSetting webSetting) {
+        webSetting.setId(1L);
+        return ResponseEntity.ok().body(new Response("success", "Web settings updated successfully", webSettingService.updateWebSetting(webSetting)));
     }
 }

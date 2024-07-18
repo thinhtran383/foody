@@ -32,7 +32,7 @@ public class WebSettingService {
     }
 
     @Transactional
-    public void updateWebSetting(WebSetting webSetting) {
+    public WebSetting updateWebSetting(WebSetting webSetting) {
         Optional<WebSetting> webSettingOptional = webSettingRepository.findById(webSetting.getId());
 
         if(webSettingOptional.isPresent()) {
@@ -42,8 +42,11 @@ public class WebSettingService {
             webSettingUpdate.setPhone(webSetting.getPhone());
             webSettingUpdate.setAddress(webSetting.getAddress());
             webSettingUpdate.setImageUrl(webSetting.getImageUrl());
-            webSettingRepository.save(webSettingUpdate);
+            return  webSettingRepository.save(webSettingUpdate);
         }
+
+        return null;
+
     }
 
     @Transactional

@@ -112,7 +112,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 //Web-setting
                 Pair.of(String.format("%s/web-settings", apiPrefix), "GET"),
-//                Pair.of(String.format("%s/web-settings/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/web-settings/**", apiPrefix), "PUT"),
 
 
                 // Category
@@ -133,6 +133,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 //Pay
                 Pair.of(String.format("%s/payment/**", apiPrefix), "POST")
+
+
 
 
         );

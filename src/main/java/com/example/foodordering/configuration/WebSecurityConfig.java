@@ -83,23 +83,21 @@ public class WebSecurityConfig {
                             )
                             .permitAll();
 
-                    request.requestMatchers(HttpMethod.POST,      // for user
+                    request.requestMatchers(      // for user
                             String.format("%s/users/login", apiPrefix),
 
                             String.format("%s/orders", apiPrefix),
                             String.format("%s/payment/**", apiPrefix),
                             String.format("%s/payment", apiPrefix),
-                            String.format("%s/notifications/**", apiPrefix)
+                            String.format("%s/notifications/**", apiPrefix),
 
-
+                            String.format("%s/web-settings/**", apiPrefix)
 
                     ).permitAll();
 
-                    request.requestMatchers(
-
-
-                            String.format("%s/orders/**", apiPrefix)
-                    ).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
+//                    request.requestMatchers(
+//                            String.format("%s/orders/**", apiPrefix)
+//                    ).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
 
                     request.requestMatchers(
                             String.format("%s/tables/**", apiPrefix),
