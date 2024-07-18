@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,6 @@ public class FirebaseMessagingService {
         content.put("title", notificationMessageDTO.getTitle());
         content.put("body", notificationMessageDTO.getBody());
         content.put("image", notificationMessageDTO.getImage());
-
 
         Notification notification = Notification
                 .builder()
@@ -50,15 +50,27 @@ public class FirebaseMessagingService {
         return "success sending notification";
     }
 
-    public String sendNotificationToAll(NotificationMessageDTO notificationMessageDTO){
+    private boolean isTokenValid(String token) {
+        try {
+            firebaseMessaging.send(Message.builder().setToken(token).build());
+            return true;
+        } catch (FirebaseMessagingException e) {
+            return false;
+        }
+    }
+
+    public String sendNotificationToAll(NotificationMessageDTO notificationMessageDTO) {
         List<DeviceToken> deviceTokens = deviceTokenRepository.findAll();
 
-        for(DeviceToken deviceToken : deviceTokens){
+        List<DeviceToken> validTokens = deviceTokens.stream()
+                .filter(token -> isTokenValid(token.getToken()))
+                .toList();
+
+        for (DeviceToken deviceToken : validTokens) {
             notificationMessageDTO.setRecipientToken(deviceToken.getToken());
             sendNotificationByToken(notificationMessageDTO);
         }
 
         return "success sending notification to all";
-
     }
 }
