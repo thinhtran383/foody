@@ -129,11 +129,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 // Table
                 Pair.of(String.format("%s/tables/all", apiPrefix), "GET"),
-                Pair.of("/home/**", "GET")
+                Pair.of("/home/**", "GET"),
+
+                //Pay
+                Pair.of(String.format("%s/payment/**", apiPrefix), "POST")
 
 
-
-        );
+                );
 
         String requestPath = request.getServletPath();
         String requestMethod = request.getMethod();

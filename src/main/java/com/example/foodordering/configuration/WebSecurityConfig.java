@@ -93,8 +93,7 @@ public class WebSecurityConfig {
                     request.requestMatchers(
 
                             String.format("%s/notification/**", apiPrefix),
-                            String.format("%s/orders/**", apiPrefix),
-                            String.format("%s/payment/**", apiPrefix)
+                            String.format("%s/orders/**", apiPrefix)
                     ).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
 
                     request.requestMatchers(

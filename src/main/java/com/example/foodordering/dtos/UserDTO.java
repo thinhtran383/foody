@@ -27,7 +27,8 @@ public class UserDTO {
     @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Invalid email")
     private String email;
 
-    @Pattern(regexp = "^(0[3|5|7|8|9])+([0-9]{8})$", message = "Invalid phone number")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Invalid phone number")
+
     @NotBlank(message = "Phone number is required")
     private String phoneNumber;
 

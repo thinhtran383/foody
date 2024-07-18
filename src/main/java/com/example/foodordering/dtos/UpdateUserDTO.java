@@ -14,7 +14,7 @@ import lombok.Setter;
 public class UpdateUserDTO {
     private String fullName;
 
-    @Pattern(regexp = "^(0[3|5|7|8|9])+([0-9]{8})$", message = "Invalid phone number")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Invalid phone number")
     private String phoneNumber;
 
     @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Invalid email")
