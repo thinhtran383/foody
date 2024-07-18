@@ -7,6 +7,8 @@ import com.example.foodordering.services.OrderService;
 import com.example.foodordering.services.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,13 @@ import java.util.Random;
 public class PaymentController {
     private final PaymentService paymentService;
     private final OrderService orderService;
+
+    @Value("${redirectUrl}")
+    private String redirectUrl;
+
+    @Value("${ipUrl}")
+    private String ipUrl;
+
 
 //    @GetMapping("/momo")
 //    public String payWithMoMo(
@@ -45,10 +54,14 @@ public class PaymentController {
             String orderId = String.valueOf(paymentResponse.getOrderId());
             long amount = paymentResponse.getTotalMoney().longValue();
 
-            String redirectUrl = "http://localhost:8080/home/pay-success";
-            String ipnUrl = String.format("https://local.thinhtran.online/api/v1/payment/momo/%s", tableId);
 
-            return ResponseEntity.ok().body(new Response("success", "", paymentService.payWithMoMo(orderId, amount, redirectUrl, ipnUrl)));
+            StringBuilder sb = new StringBuilder();
+            sb.append(ipUrl);
+            sb.append(String.format("/%s", tableId));
+
+
+
+            return ResponseEntity.ok().body(new Response("success", "", paymentService.payWithMoMo(orderId, amount, redirectUrl, sb.toString())));
         } else {
             orderService.paymentOrder(tableId);
             return ResponseEntity.ok().body(new Response("success", "pay-success", "Payment success"));
