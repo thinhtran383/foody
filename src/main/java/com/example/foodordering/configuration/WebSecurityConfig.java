@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -41,6 +42,7 @@ public class WebSecurityConfig {
 
 
         http
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> {
                     request
@@ -100,17 +102,16 @@ public class WebSecurityConfig {
 //                    ).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
 
                     request.requestMatchers(
-                            String.format("%s/tables/**", apiPrefix),
-                            String.format("%s/orders/**", apiPrefix),
-                            String.format("%s/categories/**", apiPrefix),
-                            String.format("%s/menu/**", apiPrefix),
-                            String.format("%s/users/**", apiPrefix),
-                            String.format("%s/roles/**", apiPrefix),
-                            String.format("%s/web-settings/**", apiPrefix)
+                                    String.format("%s/tables/**", apiPrefix),
+                                    String.format("%s/orders/**", apiPrefix),
+                                    String.format("%s/categories/**", apiPrefix),
+                                    String.format("%s/menu/**", apiPrefix),
+                                    String.format("%s/users/**", apiPrefix),
+                                    String.format("%s/roles/**", apiPrefix),
+                                    String.format("%s/web-settings/**", apiPrefix)
 
 
-
-                    ).hasAuthority("ROLE_ADMIN")
+                            ).hasAuthority("ROLE_ADMIN")
                             .anyRequest()
                             .authenticated();
 
