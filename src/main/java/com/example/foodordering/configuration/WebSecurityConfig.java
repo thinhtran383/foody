@@ -93,7 +93,8 @@ public class WebSecurityConfig {
                             String.format("%s/payment", apiPrefix),
                             String.format("%s/notifications/**", apiPrefix),
 
-                            String.format("%s/web-settings/**", apiPrefix)
+                            String.format("%s/web-settings/**", apiPrefix),
+                            String.format("%s/menu/getUrlImage", apiPrefix)
 
                     ).permitAll();
 
