@@ -139,7 +139,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 Pair.of(String.format("%s/payment/**", apiPrefix), "POST"),
 
                 // img
-                Pair.of(String.format("%s/menu/getUrlImage", apiPrefix), "POST")
+                Pair.of(String.format("%s/menu/getUrlImage", apiPrefix), "POST"),
+
+                // device token
+
+                Pair.of(String.format("%s/device-tokens", apiPrefix), "POST")
 
 
 

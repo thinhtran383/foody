@@ -94,7 +94,8 @@ public class WebSecurityConfig {
                             String.format("%s/notifications/**", apiPrefix),
 
                             String.format("%s/web-settings/**", apiPrefix),
-                            String.format("%s/menu/getUrlImage", apiPrefix)
+                            String.format("%s/menu/getUrlImage", apiPrefix),
+                            String.format("%s/device-tokens", apiPrefix)
 
                     ).permitAll();
 
