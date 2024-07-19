@@ -7,6 +7,7 @@ import com.example.foodordering.entities.MenuItem;
 import com.example.foodordering.exceptions.DataNotFoundException;
 import com.example.foodordering.repositories.CategoryRepository;
 import com.example.foodordering.repositories.MenuItemRepository;
+import com.example.foodordering.repositories.OrderDetailRepository;
 import com.example.foodordering.response.menu.MenuItemResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class MenuItemService {
+    private final OrderDetailRepository orderDetailRepository;
 
     private final MenuItemRepository menuItemRepository;
     private final CategoryRepository categoryRepository;
@@ -99,6 +101,13 @@ public class MenuItemService {
     @Transactional
     public MenuItemResponse deleteMenuItem(Integer id) throws Exception {
         MenuItem menuItem = menuItemRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Item not existed"));
+
+        menuItem.getOrderDetails().forEach(orderDetail -> {
+            orderDetail.setItem(null);
+            orderDetailRepository.save(orderDetail);
+
+        });
+
 
         menuItemRepository.deleteById(id);
         return modelMapper.map(menuItem, MenuItemResponse.class);
