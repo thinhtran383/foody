@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,22 +22,24 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtGenerator jwtGenerator;
     private final UserDetailsService userDetailsService;
 
     @Value("${api.v1.prefix}")
-    String apiPrefix;
+    private String apiPrefix;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         try {
             final String authorizationHeader = request.getHeader("Authorization");
 
             System.out.println(request.getServletPath());
             System.out.println(request.getMethod());
+
+            System.out.println(request.getHeader("User-Agent"));
 
             if (isNonAuthRequest(request)) {
                 filterChain.doFilter(request, response);
