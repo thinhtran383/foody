@@ -100,7 +100,7 @@ public class MenuItemService {
 
     @Transactional
     public MenuItemResponse deleteMenuItem(Integer id) throws Exception {
-        MenuItem menuItem = menuItemRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Item not existed"));
+        MenuItem menuItem = menuItemRepository.findMenuItemById(id).orElseThrow(() -> new DataNotFoundException("Item not existed"));
 
         menuItem.getOrderDetails().forEach(orderDetail -> {
             orderDetail.setItem(null);

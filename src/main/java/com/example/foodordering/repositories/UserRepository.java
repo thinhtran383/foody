@@ -11,9 +11,10 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @EntityGraph(value = "userWithUserInfo")
+    @EntityGraph(value = "userWithRoles", type = EntityGraph.EntityGraphType.FETCH)
     Optional<User> findByUsername(String username);
 
+    @EntityGraph(value = "userWithUserInfo")
     Page<User> findAll(Pageable pageable);
 
     boolean existsByUsername(String username);

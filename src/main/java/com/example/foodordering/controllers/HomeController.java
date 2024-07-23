@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,8 @@ public class HomeController {
     private final TokenService tokenService;
     private final ModelMapper modelMapper;
 
-
     @GetMapping("/test")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String home() {
         return """
                 Welcome to FoodOrdering!:)
@@ -41,6 +42,15 @@ public class HomeController {
                 """;
     }
 
+    @PostMapping("/test")
+    public String homePost() {
+        return """
+                Welcome to FoodOrdering!:)
+                Please check the API documentation at /api-docs
+                Please check the API documentation at /swagger-ui.html
+                Please check the API documentation at /redoc.html
+                """;
+    }
     @GetMapping("/pay-success")
     public ResponseEntity<Response> paySuccess() {
         return ResponseEntity.ok().body(new Response("success", "pay-success", "Payment success"));

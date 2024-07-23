@@ -1,6 +1,7 @@
-package com.example.foodordering.components;
+package com.example.foodordering.filter;
 
 import com.example.foodordering.entities.User;
+import com.example.foodordering.exceptions.TokenExpiredException;
 import com.example.foodordering.utils.JwtGenerator;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,15 +32,11 @@ public class JwtFilter extends OncePerRequestFilter {
     @Value("${api.v1.prefix}")
     private String apiPrefix;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             final String authorizationHeader = request.getHeader("Authorization");
-
-            System.out.println(request.getServletPath());
-            System.out.println(request.getMethod());
-
-            System.out.println(request.getHeader("User-Agent"));
 
             if (isNonAuthRequest(request)) {
                 filterChain.doFilter(request, response);
@@ -50,40 +47,42 @@ public class JwtFilter extends OncePerRequestFilter {
                 String token = authorizationHeader.substring(7);
                 String username = jwtGenerator.extractUsername(token);
 
-
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     User user = (User) userDetailsService.loadUserByUsername(username);
 
-                    if (jwtGenerator.isValidToken(token, user)) {  // Ensure the token is valid for the user
-                        UsernamePasswordAuthenticationToken authenticationToken =
-                                new UsernamePasswordAuthenticationToken(
-                                        user,
-                                        null,
-                                        user.getAuthorities());
+                    try {
+                        if (jwtGenerator.isValidToken(token, user)) {  // Ensure the token is valid for the user
+                            UsernamePasswordAuthenticationToken authenticationToken =
+                                    new UsernamePasswordAuthenticationToken(
+                                            user,
+                                            null,
+                                            user.getAuthorities());
 
+                            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    } else {
+                            filterChain.doFilter(request, response);
+                        } else {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getWriter().write("Invalid Token");
+                        }
+                    } catch (TokenExpiredException e) {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        return;
+                        response.getWriter().write("Token has expired: " + e.getMessage());
                     }
-
-                    filterChain.doFilter(request, response);
                 }
             } else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Authorization header is missing or invalid");
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write(e.getMessage());
-
+            response.getWriter().write("An error occurred: " + e.getMessage());
         }
     }
 
     private boolean isNonAuthRequest(HttpServletRequest request) {
         final List<Pair<String, String>> nonAuthRequests = List.of(
-
 
 
                 // Swagger
@@ -97,6 +96,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 Pair.of("/swagger-ui/**", "GET"),
                 Pair.of("/swagger-ui.html", "GET"),
                 Pair.of("/swagger-ui/index.html", "GET"),
+
+                // heath check
+                Pair.of("/actuator", "GET"),
+                Pair.of("/actuator/**", "GET"),
 
                 // Login
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST"),
@@ -144,8 +147,6 @@ public class JwtFilter extends OncePerRequestFilter {
                 // device token
 
                 Pair.of(String.format("%s/device-tokens", apiPrefix), "POST")
-
-
 
 
         );

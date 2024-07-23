@@ -17,9 +17,17 @@ import java.util.Set;
 @AllArgsConstructor
 
 @NamedEntityGraph(
-        name = "orderWithDetails",
+        name = "orderWithDetailsAndItems",
         attributeNodes = {
-                @NamedAttributeNode("orderDetails"),
+                @NamedAttributeNode(value = "orderDetails", subgraph = "orderDetails-subgraph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "orderDetails-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("item")
+                        }
+                )
         }
 )
 public class Order {
@@ -45,9 +53,4 @@ public class Order {
         this.id = (int) (Math.random() * 1000000);
     }
 
-
-    public void addOrderDetail(OrderDetail orderDetail) {
-        orderDetails.add(orderDetail);
-        orderDetail.setOrder(this);
-    }
 }

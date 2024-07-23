@@ -4,6 +4,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,13 +21,20 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @NamedEntityGraph(
-        name = "userWithUserInfo",
+        name = "userWithRoles",
         attributeNodes = {
                 @NamedAttributeNode("userInfo"),
                 @NamedAttributeNode("roles")
         }
 )
-@ToString
+
+@NamedEntityGraph(
+        name = "userWithUserInfo",
+        attributeNodes = {
+                @NamedAttributeNode("userInfo")
+        }
+
+)
 @Table(name = "users", schema = "foody")
 public class User implements UserDetails {
     @Id
@@ -43,11 +51,15 @@ public class User implements UserDetails {
     private String password;
 
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
+    @BatchSize(size = 10)
     private UserInfo userInfo;
 
     @ManyToMany(mappedBy = "users", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @ToString.Exclude
     private Set<Role> roles = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Token> tokens = new LinkedHashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

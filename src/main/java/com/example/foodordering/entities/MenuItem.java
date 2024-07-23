@@ -25,6 +25,14 @@ import java.util.Set;
         }
 )
 
+@NamedEntityGraph(
+        name = "menuItemWithOrderDetailsAndCategory",
+        attributeNodes = {
+                @NamedAttributeNode("orderDetails"),
+                @NamedAttributeNode("category")
+        }
+)
+
 
 public class MenuItem {
     @Id

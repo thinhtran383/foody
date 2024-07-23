@@ -56,13 +56,12 @@ public class PaymentController {
             long amount = paymentResponse.getTotalMoney().longValue();
 
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(ipUrl);
-            sb.append(String.format("/%s", tableId));
+            String sb = ipUrl +
+                    String.format("/%s", tableId);
 
 
 
-            return ResponseEntity.ok().body(new Response("success", "", paymentService.payWithMoMo(orderId, amount, redirectUrl, sb.toString())));
+            return ResponseEntity.ok().body(new Response("success", "", paymentService.payWithMoMo(orderId, amount, redirectUrl, sb)));
         } else {
             orderService.paymentOrder(tableId);
             return ResponseEntity.ok().body(new Response("success", "pay-success", "Payment success"));
@@ -73,10 +72,7 @@ public class PaymentController {
     @PostMapping("/momo/{tableId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     private String payWithMoMo(@PathVariable int tableId) throws DataNotFoundException {
-        System.out.println("call");
         return orderService.paymentOrder(tableId).toString();
-
-
     }
 
 }

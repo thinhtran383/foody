@@ -7,6 +7,7 @@ import com.example.foodordering.exceptions.DataNotFoundException;
 import com.example.foodordering.repositories.*;
 import com.example.foodordering.response.user.UserResponse;
 import com.example.foodordering.utils.JwtGenerator;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -59,7 +60,7 @@ public class UserService {
         }
 
         // check info user is already exist
-        if (userInfoRepository.existsByPhone(userDTO.getPhoneNumber()) || userInfoRepository.existsByEmail(userDTO.getEmail())) {
+        if (userInfoRepository.existsByEmailOrPhone(userDTO.getEmail(), userDTO.getPhoneNumber())) {
             throw new DataIntegrityViolationException("Phone number or Email already exists");
         }
 
@@ -80,7 +81,6 @@ public class UserService {
 
         // Create UserInfo entity
         UserInfo userInfo = UserInfo.builder()
-                .users(newUser)
                 .address(userDTO.getAddress())
                 .name(userDTO.getFullname())
                 .email(userDTO.getEmail())
@@ -113,14 +113,9 @@ public class UserService {
 
     @Transactional
     public String login(String username, String password) throws Exception {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+        User userExist = userRepository.findByUsername(username)
+                .orElseThrow(() -> new DataNotFoundException("User not exist")); // 1
 
-
-        if (optionalUser.isEmpty()) {
-            throw new DataNotFoundException("User not exist");
-        }
-
-        User userExist = optionalUser.get();
 
         if (!passwordEncoder.matches(password, userExist.getPassword())) {
             throw new BadCredentialsException("Password not match");
@@ -203,18 +198,25 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
-//        boolean isAdmin = user.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.toString().equals("ROLE_ADMIN"));
-//        if (isAdmin) {
-//            throw new IllegalStateException("Cannot delete admin account");
-//        }
+        boolean isAdmin = user.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.toString().equals("ROLE_ADMIN"));
+        if (isAdmin) {
+            throw new IllegalStateException("Cannot delete admin account");
+        }
 
 
-        tokenRepository.deleteByUser(user);
-        userInfoRepository.delete(user.getUserInfo());
+        user.getRoles().clear();
+
+        userRoleRepository.deleteByUser(user);
+        userRepository.delete(user);
+        userRoleRepository.deleteByUser(user);
 
 
-        userRoleIdRepository.deleteByUser(user);
-        userRepository.deleteById(userId);
+//        tokenRepository.deleteByUser(user);
+//        userInfoRepository.delete(user.getUserInfo());
+//
+//
+//        userRoleIdRepository.deleteByUser(user);
+//        userRepository.deleteById(userId);
 
         return user;
     }

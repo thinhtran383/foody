@@ -23,5 +23,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         log.error("{}", "accessDeniedException");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("Unauthorized access denied");
+
+       log.error(accessDeniedException.getMessage());
     }
 }

@@ -22,4 +22,7 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Integer> {
     MenuItem findByImage(String image);
 
     Optional<MenuItem> findByItemNameAndCategory_CategoryName(String item, String category);
+
+    @EntityGraph(value = "menuItemWithOrderDetailsAndCategory")
+    Optional<MenuItem> findMenuItemById(int id);
 }

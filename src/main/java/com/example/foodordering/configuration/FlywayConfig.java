@@ -1,5 +1,6 @@
 package com.example.foodordering.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
+@Slf4j
 public class FlywayConfig {
     @Value("${spring.flyway.locations}")
     private String[] locations;
@@ -32,8 +34,7 @@ public class FlywayConfig {
                 .load();
 
         flyway.migrate();
-
-        System.out.println("Flyway migration completed");
+        log.info("Flyway migration completed");
         return flyway;
     }
 

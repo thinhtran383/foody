@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 @Hidden
-public class ErrorHandleController implements ErrorController{
+public class ErrorHandleController implements ErrorController {
 
     @RequestMapping("/error")
     @ResponseStatus(HttpStatus.BAD_GATEWAY)

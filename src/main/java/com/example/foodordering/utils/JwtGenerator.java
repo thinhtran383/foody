@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.foodordering.entities.Token;
 import com.example.foodordering.entities.User;
+import com.example.foodordering.exceptions.TokenExpiredException;
 import com.example.foodordering.repositories.TokenRepository;
 import com.example.foodordering.repositories.UserRepository;
 import com.example.foodordering.services.UserService;
@@ -50,14 +51,22 @@ public class JwtGenerator {
     }
 
 
-    public List<String> extractRoles(String token) {
-        DecodedJWT decodedJwt = getDecodedJwt(token);
 
-        return decodedJwt.getClaim("roles").asList(String.class);
+
+    private Date getExpirationTime(String token) {
+        DecodedJWT decodedJwt = getDecodedJwt(token);
+        return decodedJwt.getExpiresAt();
     }
 
-    public boolean isValidToken(String token, User userDetails) {
+
+    public boolean isValidToken(String token, User userDetails) throws TokenExpiredException {
         String username = extractUsername(token);
+        Date expirationTime = getExpirationTime(token);
+
+        if(expirationTime.before(new Date())) {
+            throw new TokenExpiredException("Token has expired");
+        }
+
         Token existingToken = tokenRepository.findByToken(token);
 
         if (token == null || existingToken == null) {

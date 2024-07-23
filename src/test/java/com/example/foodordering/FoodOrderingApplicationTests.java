@@ -10,4 +10,10 @@ class FoodOrderingApplicationTests {
     void contextLoads() {
     }
 
+
+    // mocktest api api/v1/users/all
+    @Test
+    void testGetAllUsers() {
+    }
+
 }
