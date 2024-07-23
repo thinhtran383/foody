@@ -1,5 +1,6 @@
 package com.example.foodordering.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
@@ -19,16 +20,13 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "roleId", nullable = false)
+    @JsonIgnore
     private Integer id;
 
     @Size(max = 255)
     @Column(name = "roleName")
     private String roleName;
 
-    @ManyToMany
-    @JoinTable(name = "userRole",
-            joinColumns = @JoinColumn(name = "roleId"),
-            inverseJoinColumns = @JoinColumn(name = "userId"))
-    private Set<User> users = new LinkedHashSet<>();
+
 
 }

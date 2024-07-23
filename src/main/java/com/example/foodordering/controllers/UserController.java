@@ -55,7 +55,8 @@ public class UserController {
     ) {
         Pageable pageable = PageRequest.of(page, limit);
 
-        Page<UserResponse> userPage = userService.getAllUsers(pageable).map(UserResponse::fromUser);
+//        Page<UserResponse> userPage = userService.getAllUsers(pageable).map(UserResponse::fromUser);
+        Page<UserResponse> userPage = userService.getAllUsers(pageable);
 
         int totalPages = userPage.getTotalPages();
 

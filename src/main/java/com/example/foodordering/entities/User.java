@@ -9,9 +9,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
+
+import static org.apache.catalina.realm.UserDatabaseRealm.getRoles;
 
 @Getter
 @Setter
@@ -22,7 +22,7 @@ import java.util.Set;
 @NamedEntityGraph(
         name = "userWithRoles",
         attributeNodes = {
-                @NamedAttributeNode("roles")
+                @NamedAttributeNode(value = "roles")
         }
 )
 
@@ -44,11 +44,9 @@ public class User implements UserDetails {
     private String password;
 
 
-    @ManyToMany(mappedBy = "users", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @ToString.Exclude
-    private Set<Role> roles = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Token> tokens = new LinkedHashSet<>();
 
     @Size(max = 255)
@@ -67,13 +65,16 @@ public class User implements UserDetails {
     @Column(name = "address")
     private String address;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roleId")
+    private Role roles;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (roles == null) {
-            roles = new LinkedHashSet<>();
-        }
+        List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
-        return getRoles().stream().map(userRole -> new SimpleGrantedAuthority(userRole.getRoleName())).toList();
+        authorityList.add(new SimpleGrantedAuthority(getRoles().getRoleName().toUpperCase()));
+        return authorityList;
     }
 
 

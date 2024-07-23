@@ -1,5 +1,6 @@
 package com.example.foodordering.response.user;
 
+import com.example.foodordering.entities.Role;
 import com.example.foodordering.entities.User;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.*;
@@ -15,6 +16,8 @@ import java.util.stream.Collectors;
 @Setter
 @Builder
 @Slf4j
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserResponse {
     @Hidden
     private int id;
@@ -28,6 +31,7 @@ public class UserResponse {
     private String phoneNumber;
 
     private String address;
+    private List<Role> roles;
 
     public static UserResponse fromUser(User user){
        if(user == null){
@@ -37,6 +41,7 @@ public class UserResponse {
 
 
         return UserResponse.builder()
+//                .roles(user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toList()))
                 .id(user.getId())
                 .username(user.getUsername())
                 .fullname(user.getFullname())

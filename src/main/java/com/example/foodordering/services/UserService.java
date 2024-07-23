@@ -11,6 +11,7 @@ import com.google.firebase.auth.UserInfo;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,18 +40,17 @@ public class UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UserRoleRepository userRoleIdRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserRoleRepository userRoleRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtGenerator jwtGenerator;
 
     @Transactional(readOnly = true)
-    public Page<User> getAllUsers(Pageable pageable) {
+    public Page<UserResponse> getAllUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
 
-        return users;
+        return users.map(user -> modelMapper.map(user, UserResponse.class));
     }
+
 
     @Transactional
     public User createUser(UserDTO userDTO) throws Exception {
@@ -77,32 +78,12 @@ public class UserService {
                 .address(userDTO.getAddress())
                 .username(username)
                 .password(passwordEncoder.encode(userDTO.getPassword()))
-                .roles(new LinkedHashSet<>())  // Initialize with mutable collection
+                .roles(role)
                 .build();
 
         // Save User entity to generate ID
         newUser = userRepository.save(newUser);
 
-
-
-
-
-
-
-        // Set role for user
-        newUser.getRoles().add(role);
-
-        // Create UserRole entity
-        UserRole userRole = UserRole.builder()
-                .id(new UserRoleId(newUser.getId(), role.getId()))
-                .user(newUser)
-                .role(role)
-                .build();
-
-        // Save UserRole entity
-        userRoleRepository.save(userRole);
-
-        // Save User entity again with updated relationships
         return userRepository.save(newUser);
     }
 
@@ -147,8 +128,6 @@ public class UserService {
     public User updateInfo(Long userId, UpdateUserDTO updatedUserDTO) throws Exception {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-
 
 
         // update user
@@ -197,11 +176,8 @@ public class UserService {
         }
 
 
-        user.getRoles().clear();
-
-        userRoleRepository.deleteByUser(user);
         userRepository.delete(user);
-        userRoleRepository.deleteByUser(user);
+        return user;
 
 
 //        tokenRepository.deleteByUser(user);
@@ -211,6 +187,6 @@ public class UserService {
 //        userRoleIdRepository.deleteByUser(user);
 //        userRepository.deleteById(userId);
 
-        return user;
+
     }
 }
