@@ -7,6 +7,7 @@ import com.example.foodordering.exceptions.DataNotFoundException;
 import com.example.foodordering.repositories.*;
 import com.example.foodordering.response.user.UserResponse;
 import com.example.foodordering.utils.JwtGenerator;
+import com.google.firebase.auth.UserInfo;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +40,6 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final UserRoleRepository userRoleIdRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserInfoRepository userInfoRepository;
     private final UserRoleRepository userRoleRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtGenerator jwtGenerator;
@@ -60,7 +61,7 @@ public class UserService {
         }
 
         // check info user is already exist
-        if (userInfoRepository.existsByEmailOrPhone(userDTO.getEmail(), userDTO.getPhoneNumber())) {
+        if (userRepository.existsByEmailOrPhoneNumber(userDTO.getEmail(), userDTO.getPhoneNumber())) {
             throw new DataIntegrityViolationException("Phone number or Email already exists");
         }
 
@@ -71,6 +72,9 @@ public class UserService {
 
         // Create User entity
         User newUser = User.builder()
+                .fullname(userDTO.getFullname())
+                .email(userDTO.getEmail())
+                .address(userDTO.getAddress())
                 .username(username)
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .roles(new LinkedHashSet<>())  // Initialize with mutable collection
@@ -79,19 +83,11 @@ public class UserService {
         // Save User entity to generate ID
         newUser = userRepository.save(newUser);
 
-        // Create UserInfo entity
-        UserInfo userInfo = UserInfo.builder()
-                .address(userDTO.getAddress())
-                .name(userDTO.getFullname())
-                .email(userDTO.getEmail())
-                .phone(userDTO.getPhoneNumber())
-                .build();
 
-        // Set userInfo to user
-        newUser.setUserInfo(userInfo);
 
-        // Save UserInfo entity
-        userInfoRepository.save(userInfo);
+
+
+
 
         // Set role for user
         newUser.getRoles().add(role);
@@ -149,29 +145,27 @@ public class UserService {
 
     @Transactional(rollbackFor = Exception.class)
     public User updateInfo(Long userId, UpdateUserDTO updatedUserDTO) throws Exception {
-        Optional<User> existingUser = userRepository.findById(userId);
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // check user is existed
-        if (existingUser.isEmpty()) {
-            throw new DataNotFoundException("User not found");
-        }
 
-        UserInfo userInfoExisting = existingUser.get().getUserInfo();
+
+
         // update user
         if (updatedUserDTO.getFullname() != null) {
-            userInfoExisting.setName(updatedUserDTO.getFullname());
+            existingUser.setFullname(updatedUserDTO.getFullname());
         }
 
         if (updatedUserDTO.getPhoneNumber() != null) {
-            userInfoExisting.setPhone(updatedUserDTO.getPhoneNumber());
+            existingUser.setPhoneNumber(updatedUserDTO.getPhoneNumber());
         }
 
         if (updatedUserDTO.getAddress() != null) {
-            userInfoExisting.setAddress(updatedUserDTO.getAddress());
+            existingUser.setAddress(updatedUserDTO.getAddress());
         }
 
         if (updatedUserDTO.getEmail() != null) {
-            userInfoExisting.setEmail(updatedUserDTO.getEmail());
+            existingUser.setEmail(updatedUserDTO.getEmail());
         }
 
         if (updatedUserDTO.getPassword() != null
@@ -183,12 +177,11 @@ public class UserService {
             String newPassword = updatedUserDTO.getPassword();
             String encodePassword = passwordEncoder.encode(newPassword);
 
-            existingUser.get().setPassword(encodePassword);
+            existingUser.setPassword(encodePassword);
 
         }
 
-        existingUser.get().setUserInfo(userInfoExisting);
-        return userRepository.save(existingUser.get());
+        return userRepository.save(existingUser);
 
     }
 

@@ -1,7 +1,6 @@
 package com.example.foodordering.response.user;
 
 import com.example.foodordering.entities.User;
-import com.example.foodordering.entities.UserInfo;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -37,15 +36,13 @@ public class UserResponse {
        }
 
 
-        UserInfo userInfo = user.getUserInfo();
-
         return UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .fullname(userInfo.getName())
-                .email(userInfo.getEmail())
-                .phoneNumber(userInfo.getPhone())
-                .address(userInfo.getAddress())
+                .fullname(user.getFullname())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .address(user.getAddress())
                 .build();
     }
 

@@ -42,7 +42,7 @@ public class OrderService {
 
         Order order;
 
-        if (table.getStatus().equals("OCCUPIED")) { // If the table is occupied then update the order
+        if (table.getStatus().equals("OCCUPIED")) {
             // Find the existing order for the occupied table
             order = orderRepository.findByTable(table)
                     .orElseThrow(() -> new DataNotFoundException("Order not found for the occupied table"));
@@ -77,13 +77,6 @@ public class OrderService {
                     .table(table)
                     .createdTime(Instant.now())
                     .build();
-            // check orderItems have any duplicate item then sum the quantity
-            orderItems = orderItems.stream()
-                    .collect(Collectors.groupingBy(OrderItemDTO::getItemId, Collectors.summingInt(OrderItemDTO::getQuantity)))
-                    .entrySet()
-                    .stream()
-                    .map(entry -> OrderItemDTO.builder().itemId(entry.getKey()).quantity(entry.getValue()).build())
-                    .collect(Collectors.toList());
 
             // Create order details and set the relationship with the order
             Set<OrderDetail> orderDetails = orderItems.stream()
@@ -152,12 +145,13 @@ public class OrderService {
                 .build();
 
         return paymentResponse;
+
     }
 
     @Transactional
     public PaymentResponse getPaymentInfo(int tableId) throws DataNotFoundException {
         Order order = orderRepository.findByTable_id(tableId)
-                .orElseThrow(() -> new DataNotFoundException(String.format("TableID %d not have any orders", tableId)));
+                .orElseThrow(() -> new DataNotFoundException(String.format("TableID %d not existed", tableId)));
 
         return PaymentResponse.builder()
                 .orderId(order.getId())
@@ -168,7 +162,7 @@ public class OrderService {
     @Transactional
     public OrderResponse getAllOrderByTableId(int tableId) throws DataNotFoundException {
         Order order = orderRepository.findByTable_id(tableId)
-                .orElseThrow(() -> new DataNotFoundException(String.format("TableID %d not have any orders", tableId)));
+                .orElseThrow(() -> new DataNotFoundException(String.format("TableId %d not have any order", tableId)));
 
 
         List<OrderDetailResponse> orderDetailResponse = order.getOrderDetails()
@@ -186,7 +180,6 @@ public class OrderService {
                 .totalMoney(getTotalMoneyByOrder(order))
                 .build();
 
-        log.error("{}", orderResponse);
         return orderResponse;
     }
 

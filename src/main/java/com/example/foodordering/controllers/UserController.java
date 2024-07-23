@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("${api.v1.prefix}/users")
+@RequestMapping("${api.v1.prefix:/api/v1}/users")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -93,7 +93,7 @@ public class UserController {
 
             Token token = tokenService.addToken(userLoginDetail, tokenGenerate); // Save token to database
 
-            LoginResponse loginResponse = modelMapper.map(userLoginDetail.getUserInfo(), LoginResponse.class);
+            LoginResponse loginResponse = modelMapper.map(userLoginDetail, LoginResponse.class);
             loginResponse.setToken(token.getToken());
             loginResponse.setRole(token.getUser()
                     .getAuthorities()
