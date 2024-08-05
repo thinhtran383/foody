@@ -15,9 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(value = "userWithRoles", type = EntityGraph.EntityGraphType.FETCH)
     Optional<User> findByUsername(String username);
 
+    @EntityGraph(value = "userWithRoles", type = EntityGraph.EntityGraphType.FETCH)
     Page<User> findAll(Pageable pageable);
-
-
 
     boolean existsByUsername(String username);
 

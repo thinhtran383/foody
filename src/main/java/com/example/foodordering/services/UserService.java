@@ -7,13 +7,9 @@ import com.example.foodordering.exceptions.DataNotFoundException;
 import com.example.foodordering.repositories.*;
 import com.example.foodordering.response.user.UserResponse;
 import com.example.foodordering.utils.JwtGenerator;
-import com.google.firebase.auth.UserInfo;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +38,8 @@ public class UserService {
     public Page<UserResponse> getAllUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
 
-        return users.map(user -> modelMapper.map(user, UserResponse.class));
+        Page<UserResponse> result = users.map(user -> modelMapper.map(user, UserResponse.class));
+        return result;
     }
 
 
@@ -114,14 +105,10 @@ public class UserService {
     public User getUserDetailFromToken(String token) throws Exception {
         String username = jwtGenerator.extractUsername(token);
 
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(()-> new DataNotFoundException("User not found"));
 
-        Optional<User> user = userRepository.findByUsername(username);
-
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new DataNotFoundException("User not found");
-        }
+        return user;
     }
 
     @Transactional(rollbackFor = Exception.class)

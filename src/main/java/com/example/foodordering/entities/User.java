@@ -43,9 +43,6 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-
-
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Token> tokens = new LinkedHashSet<>();
 

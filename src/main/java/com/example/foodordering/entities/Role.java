@@ -14,7 +14,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@ToString(of = {"roleName"})
 @Table(name = "roles", schema = "foody")
 public class Role {
     @Id
@@ -28,5 +27,8 @@ public class Role {
     private String roleName;
 
 
-
+    @Override
+    public String toString() {
+        return getRoleName();
+    }
 }

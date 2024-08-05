@@ -31,7 +31,7 @@ public class UserResponse {
     private String phoneNumber;
 
     private String address;
-    private List<Role> roles;
+    private String roles;
 
     public static UserResponse fromUser(User user){
        if(user == null){

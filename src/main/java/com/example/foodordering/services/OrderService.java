@@ -32,7 +32,6 @@ public class OrderService {
     private final TableRepository tableRepository;
     private final TableService tableService;
     private final OrderRepository orderRepository;
-    private final OrderDetailRepository orderDetailRepository;
     private final MenuItemService menuItemService;
 
     @Transactional
@@ -52,7 +51,7 @@ public class OrderService {
             for (OrderItemDTO orderItemDTO : orderItems) {
                 MenuItem menuItem = menuItemService.getMenuItemById(orderItemDTO.getItemId());
 
-                OrderDetail existingOrderDetail = orderDetails.stream()
+                OrderDetail existingOrderDetail = orderDetails.parallelStream()
                         .filter(detail -> detail.getItem().equals(menuItem))
                         .findFirst()
                         .orElse(null);
