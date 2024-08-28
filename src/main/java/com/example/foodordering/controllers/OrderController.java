@@ -37,8 +37,6 @@ public class OrderController {
     @PostMapping()
     @ApiResponse(content = @Content(schema = @Schema(implementation = OrderItemDTO.class), mediaType = "application/json"))
     public ResponseEntity<Response> createOrder(@Valid @RequestParam int tableId, @Valid @RequestBody List<OrderItemDTO> orderDetails) throws Exception {
-
-
         return ResponseEntity.ok().body(
                 new Response("success",
                         "Retrieved successfully",

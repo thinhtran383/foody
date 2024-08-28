@@ -10,7 +10,5 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     @EntityGraph(value = "orderWithDetailsAndItems")
     Optional<Order> findByTable_id(int tableId);
-
-
     Optional<Order> findByTable(Table table);
 }

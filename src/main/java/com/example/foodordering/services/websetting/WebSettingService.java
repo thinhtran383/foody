@@ -18,7 +18,7 @@ public class WebSettingService {
     private final WebSettingRepository webSettingRepository;
 
     @Transactional
-    public List<WebSetting> getAll(){
+    public List<WebSetting> getAll() {
         return webSettingRepository.findAll();
     }
 
@@ -26,6 +26,7 @@ public class WebSettingService {
     public WebSetting getWebSetting() {
         return webSettingRepository.findWebSettingByIsChooseTrue();
     }
+
     @Transactional
     public void addWebSetting(WebSetting webSetting) {
         webSetting.setIsChoose(false);
@@ -36,32 +37,32 @@ public class WebSettingService {
     public WebSetting updateWebSetting(WebSettingUpdateDTO webSetting) {
         Optional<WebSetting> webSettingOptional = webSettingRepository.findById(webSetting.getId());
 
-       if (webSettingOptional.isPresent()) {
-                WebSetting webSettingUpdate = webSettingOptional.get();
-               if(webSetting.getFullname() != null){
-                   webSettingUpdate.setFullname(webSetting.getFullname());
-               }
-                if(webSetting.getEmail() != null){
-                     webSettingUpdate.setEmail(webSetting.getEmail());
-                }
-                if(webSetting.getPhoneNumber() != null){
-                    webSettingUpdate.setPhoneNumber(webSetting.getPhoneNumber());
-                }
-                if(webSetting.getAddress() != null){
-                    webSettingUpdate.setAddress(webSetting.getAddress());
-                }
-                return webSettingRepository.save(webSettingUpdate);
-
+        if (webSettingOptional.isPresent()) {
+            WebSetting webSettingUpdate = webSettingOptional.get();
+            if (webSetting.getFullname() != null) {
+                webSettingUpdate.setFullname(webSetting.getFullname());
             }
+            if (webSetting.getEmail() != null) {
+                webSettingUpdate.setEmail(webSetting.getEmail());
+            }
+            if (webSetting.getPhoneNumber() != null) {
+                webSettingUpdate.setPhoneNumber(webSetting.getPhoneNumber());
+            }
+            if (webSetting.getAddress() != null) {
+                webSettingUpdate.setAddress(webSetting.getAddress());
+            }
+            return webSettingRepository.save(webSettingUpdate);
+
+        }
 
         return null;
 
     }
 
     @Transactional
-    public void enableSetting(WebSetting webSetting){
+    public void enableSetting(WebSetting webSetting) {
         WebSetting webSettingUpdate = webSettingRepository.findWebSettingByIsChooseTrue();
-        if(webSettingUpdate != null){
+        if (webSettingUpdate != null) {
             webSettingUpdate.setIsChoose(false);
             webSettingRepository.save(webSettingUpdate);
         }

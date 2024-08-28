@@ -19,6 +19,7 @@ public class FirebaseConfig {
     @Value("${fcm.json.key.url}")
     private String fcmJsonKeyUrl;
 
+
     @Bean
     public FirebaseMessaging firebaseMessaging() throws IOException {
 //        URL url = new URL(fcmJsonKeyUrl);
