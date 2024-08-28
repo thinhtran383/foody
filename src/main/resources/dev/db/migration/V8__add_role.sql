@@ -1,0 +1,1 @@
+update users set roleId=2 where username='admin'
